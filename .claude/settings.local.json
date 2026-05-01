@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(curl -s http://localhost:3000/tentang)",
+      "Bash(curl -s http://localhost:3000/pengurus)",
+      "Bash(curl -s http://localhost:3000/kegiatan)",
+      "Bash(curl -s http://localhost:3000/kegiatan/3)",
+      "Bash(curl -s http://localhost:3000/galeri)",
+      "Bash(curl -s http://localhost:3000/video)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(curl -s http://localhost:3000/kontak)"
+    ]
+  }
+}
