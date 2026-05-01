@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { galeri, kategoriGaleri } from "@/data/galeri";
 import GaleriFilter from "@/app/components/galeri/GaleriFilter";
-import InteractiveBentoGallery, { type GalleryMediaItem } from "@/components/ui/interactive-bento-gallery";
+import GaleriGrid from "@/app/components/galeri/GaleriGrid";
 
 export default function GaleriSection() {
   const [aktif, setAktif] = useState<string>("Semua");
@@ -14,26 +14,10 @@ export default function GaleriSection() {
 
   const filtered = aktif === "Semua" ? galeri : galeri.filter((g) => g.kategori === aktif);
 
-  const mediaItems: GalleryMediaItem[] = filtered.map((item) => ({
-    id: item.id,
-    type: "image",
-    title: item.keterangan,
-    desc: item.kategori,
-    url: item.foto,
-    span: item.span,
-  }));
-
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-3">Galeri Foto</h2>
-          <p className="text-gray-500 text-base md:text-lg">
-            Kumpulan momen berharga kegiatan dan ibadah GKY Balikpapan
-          </p>
-          <div className="mt-4 h-1 w-16 bg-accent rounded-full mx-auto" />
-        </div>
-
+    <section className="py-20 bg-[#f7f7f8]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+       
         <div className="mb-8">
           <GaleriFilter
             kategori={kategoriGaleri}
@@ -43,17 +27,13 @@ export default function GaleriSection() {
           />
         </div>
 
-        <p className="text-sm text-gray-400 text-center mb-6">
+        <p className="text-xs text-gray-400 text-center mb-8">
           Menampilkan {filtered.length} foto
           {aktif !== "Semua" ? ` dalam kategori "${aktif}"` : ""}
         </p>
-      </div>
 
-      <InteractiveBentoGallery
-        mediaItems={mediaItems}
-        title=""
-        description=""
-      />
+        <GaleriGrid items={filtered} />
+      </div>
     </section>
   );
 }
