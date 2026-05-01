@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { motion, useScroll, useTransform } from "framer-motion"
 import { siteInfo } from "@/data/siteInfo"
 import { GooeyFilter } from "@/components/ui/gooey-filter"
 import { PixelTrail } from "@/components/ui/pixel-trail"
@@ -34,26 +34,59 @@ export default function HeroSection() {
   const screenSize = useScreenSize()
   const [current, setCurrent] = useState(0)
   const [paused, setPaused] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  useEffect(() => {
-    if (paused) return
-    const timer = setInterval(() => {
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  })
+  const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"])
+
+  const stopTimer = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+      intervalRef.current = null
+    }
+  }, [])
+
+  const startTimer = useCallback(() => {
+    stopTimer()
+    intervalRef.current = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length)
     }, SLIDE_INTERVAL)
-    return () => clearInterval(timer)
-  }, [paused])
+  }, [stopTimer])
+
+  useEffect(() => {
+    if (!paused) startTimer()
+    else stopTimer()
+    return stopTimer
+  }, [paused, startTimer, stopTimer])
+
+  const goTo = useCallback(
+    (index: number) => {
+      setCurrent(index)
+      if (!paused) startTimer()
+    },
+    [paused, startTimer]
+  )
+
+  const prev = () => goTo((current - 1 + slides.length) % slides.length)
+  const next = () => goTo((current + 1) % slides.length)
 
   return (
     <section
+      ref={sectionRef}
       className="relative min-h-[85vh] flex items-center overflow-hidden bg-[#002F5F]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Slideshow images — all mounted, cross-fade via opacity */}
+      {/* Slideshow images — cross-fade + parallax Y */}
       {slides.map((slide, i) => (
         <motion.div
           key={i}
           className="absolute inset-0"
+          style={{ y: parallaxY, scale: 1.2 }}
           animate={{ opacity: i === current ? 0.4 : 0 }}
           transition={{ duration: 1.4, ease: "easeInOut" }}
         >
@@ -84,9 +117,30 @@ export default function HeroSection() {
         />
       </div>
 
+      {/* Left arrow */}
+      <button
+        onClick={prev}
+        aria-label="Slide sebelumnya"
+        className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 border border-white/20 flex items-center justify-center transition-all duration-200 hover:scale-110 backdrop-blur-sm"
+      >
+        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      {/* Right arrow */}
+      <button
+        onClick={next}
+        aria-label="Slide berikutnya"
+        className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 border border-white/20 flex items-center justify-center transition-all duration-200 hover:scale-110 backdrop-blur-sm"
+      >
+        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
       {/* Content */}
       <div className="relative z-30 max-w-6xl mx-auto px-4 py-24 text-center w-full">
-        
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-5 leading-tight tracking-tight">
           {siteInfo.namaGereja}
         </h1>
@@ -116,7 +170,7 @@ export default function HeroSection() {
         {slides.map((_, i) => (
           <button
             key={i}
-            onClick={() => setCurrent(i)}
+            onClick={() => goTo(i)}
             aria-label={`Slide ${i + 1}`}
             className="relative h-1.5 rounded-full overflow-hidden transition-all duration-300"
             style={{ width: i === current ? "2rem" : "0.75rem" }}
@@ -124,11 +178,11 @@ export default function HeroSection() {
             <span className="absolute inset-0 bg-white/30 rounded-full" />
             {i === current && (
               <motion.span
+                key={current}
                 className="absolute inset-y-0 left-0 bg-white rounded-full"
                 initial={{ width: "0%" }}
                 animate={{ width: "100%" }}
                 transition={{ duration: SLIDE_INTERVAL / 1000, ease: "linear" }}
-                key={current}
               />
             )}
           </button>

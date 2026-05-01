@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { galeri, kategoriGaleri } from "@/data/galeri";
 import GaleriFilter from "@/app/components/galeri/GaleriFilter";
-import GaleriGrid from "@/app/components/galeri/GaleriGrid";
+import InteractiveBentoGallery, { type GalleryMediaItem } from "@/components/ui/interactive-bento-gallery";
 
 export default function GaleriSection() {
   const [aktif, setAktif] = useState<string>("Semua");
@@ -12,8 +12,16 @@ export default function GaleriSection() {
     kategoriGaleri.map((k) => [k, galeri.filter((g) => g.kategori === k).length])
   );
 
-  const filtered =
-    aktif === "Semua" ? galeri : galeri.filter((g) => g.kategori === aktif);
+  const filtered = aktif === "Semua" ? galeri : galeri.filter((g) => g.kategori === aktif);
+
+  const mediaItems: GalleryMediaItem[] = filtered.map((item) => ({
+    id: item.id,
+    type: "image",
+    title: item.keterangan,
+    desc: item.kategori,
+    url: item.foto,
+    span: item.span,
+  }));
 
   return (
     <section className="py-20 bg-gray-50">
@@ -39,9 +47,13 @@ export default function GaleriSection() {
           Menampilkan {filtered.length} foto
           {aktif !== "Semua" ? ` dalam kategori "${aktif}"` : ""}
         </p>
-
-        <GaleriGrid items={filtered} />
       </div>
+
+      <InteractiveBentoGallery
+        mediaItems={mediaItems}
+        title=""
+        description=""
+      />
     </section>
   );
 }
