@@ -12,7 +12,7 @@ const quickLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-white">
+    <footer className="bg-primary text-white" style={{ fontFamily: "var(--font-inter)" }}>
       <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>

@@ -86,12 +86,7 @@ export default function HeroSection() {
 
       {/* Content */}
       <div className="relative z-30 max-w-6xl mx-auto px-4 py-24 text-center w-full">
-        <div className="inline-block mb-6">
-          <span className="bg-white/10 text-white/90 text-sm font-medium px-4 py-1.5 rounded-full border border-white/20">
-            Selamat Datang
-          </span>
-        </div>
-
+        
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-5 leading-tight tracking-tight">
           {siteInfo.namaGereja}
         </h1>

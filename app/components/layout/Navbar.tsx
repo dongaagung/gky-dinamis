@@ -2,43 +2,77 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { siteInfo } from "@/data/siteInfo";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { href: "/", label: "Beranda" },
-  { href: "/tentang", label: "Tentang" },
-  { href: "/pengurus", label: "Pengurus" },
-  { href: "/kegiatan", label: "Kegiatan" },
-  { href: "/galeri", label: "Galeri" },
-  { href: "/video", label: "Video" },
-  { href: "/kontak", label: "Kontak" },
+  { href: "/", label: "BERANDA" },
+  { href: "/tentang", label: "TENTANG" },
+  { href: "/pengurus", label: "PENGURUS" },
+  { href: "/kegiatan", label: "KEGIATAN" },
+  { href: "/galeri", label: "GALERI" },
+  { href: "/video", label: "VIDEO" },
+  { href: "/faq", label: "FAQ" },
+  { href: "/kontak", label: "KONTAK" },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-md">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-primary font-bold text-lg md:text-xl leading-tight">
-              {siteInfo.namaGereja}
-            </span>
+        <div className="flex items-center justify-between h-20">
+
+          {/* Logo */}
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo-gky.png"
+              alt="Logo GKY Balikpapan"
+              width={60}
+              height={60}
+              className="object-contain"
+              priority
+            />
           </Link>
 
-          <div className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-gray-600 hover:text-primary font-medium text-sm transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
+          {/* Desktop nav links */}
+          <div className="hidden md:flex items-center gap-7">
+            {navLinks.map((link) => {
+              const isActive =
+                link.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(link.href);
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="group relative flex flex-col items-center gap-0.5 pb-0.5"
+                  style={{ fontFamily: "var(--font-lato)" }}
+                >
+                  <span
+                    className={`text-sm font-bold tracking-wider transition-colors duration-200 ${
+                      isActive ? "text-primary" : "text-gray-500 group-hover:text-primary"
+                    }`}
+                  >
+                    {link.label}
+                  </span>
+                  {/* Sliding underline */}
+                  <span
+                    className={`h-[2px] rounded-full transition-all duration-300 ease-out ${
+                      isActive
+                        ? "w-full bg-accent"
+                        : "w-0 group-hover:w-full bg-primary"
+                    }`}
+                  />
+                </Link>
+              );
+            })}
           </div>
 
+          {/* Mobile hamburger */}
           <button
             className="md:hidden p-2 text-gray-600 hover:text-primary rounded-md"
             onClick={() => setIsOpen(!isOpen)}
@@ -56,18 +90,31 @@ export default function Navbar() {
           </button>
         </div>
 
+        {/* Mobile menu */}
         {isOpen && (
           <div className="md:hidden border-t border-gray-100 py-2 pb-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block px-2 py-2.5 text-gray-600 hover:text-primary hover:bg-gray-50 font-medium rounded-md transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive =
+                link.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(link.href);
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`flex items-center gap-3 px-3 py-3 rounded-md font-bold text-sm tracking-wider transition-all duration-200 ${
+                    isActive
+                      ? "text-primary bg-primary/5 border-l-2 border-accent"
+                      : "text-gray-500 hover:text-primary hover:bg-gray-50 hover:border-l-2 hover:border-primary border-l-2 border-transparent"
+                  }`}
+                  style={{ fontFamily: "var(--font-lato)" }}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>
