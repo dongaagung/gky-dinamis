@@ -45,7 +45,7 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative min-h-[85vh] flex items-center overflow-hidden bg-[#0f1e3d]"
+      className="relative min-h-[85vh] flex items-center overflow-hidden bg-[#002F5F]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -68,7 +68,7 @@ export default function HeroSection() {
       ))}
 
       {/* Dark gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0f1e3d]/60 via-transparent to-[#0f1e3d]/80 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#002F5F]/60 via-transparent to-[#002F5F]/80 z-10" />
 
       {/* Gooey pixel trail layer */}
       <GooeyFilter id="gooey-filter-hero" strength={5} />

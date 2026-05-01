@@ -8,20 +8,23 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-inter: var(--font-inter);
   --font-lato: var(--font-lato);
 }
 
 @theme {
-  --color-primary: #1a3a6b;
-  --color-primary-dark: #122952;
-  --color-accent: #c8982a;
-  --color-accent-hover: #b58720;
+  --color-primary: #005E9B;        /* Baltic Blue */
+  --color-primary-dark: #003F6B;   /* Dark Baltic Blue */
+  --color-secondary: #4282B0;      /* Steel Blue */
+  --color-accent: #D92E30;         /* Scarlet Rush */
+  --color-accent-hover: #B82527;   /* Dark Scarlet */
+  --color-yellow: #FCE76A;         /* Banana Cream */
+  --color-blush: #EFB299;          /* Powder Blush */
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }

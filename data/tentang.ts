@@ -1,15 +1,10 @@
 export const tentang = {
   profil: {
-    deskripsi: `GKY Balikpapan adalah jemaat Gereja Kristen Indonesia yang berdiri
-    di kota Balikpapan, Kalimantan Timur. Dengan semangat iman yang bertumbuh dan pelayanan
-    yang penuh kasih, kami berkomitmen untuk menjadi berkat bagi seluruh masyarakat
-    di sekitar kami. Kami percaya bahwa setiap jiwa memiliki nilai yang tak ternilai
-    di mata Tuhan, dan gereja hadir sebagai tempat di mana setiap orang dapat
-    menemukan kasih, harapan, dan pertumbuhan rohani.`,
+    deskripsi: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
     tahunBerdiri: 1985,
     jumlahJemaat: "±500 jiwa",
-    denominasi: "Gereja Kristen Indonesia (GKI)",
-    foto: "https://placehold.co/720x480/1a3a6b/ffffff?text=GKI+Bukit+Sion",
+    denominasi: "Reformed Injili",
+    foto: "https://placehold.co/720x480/1a3a6b/ffffff?text=GKY+Balikpapan",
   },
 
   visi: "Menjadi jemaat yang bertumbuh dalam iman, bersatu dalam kasih, dan menjangkau dunia bagi Kristus.",
