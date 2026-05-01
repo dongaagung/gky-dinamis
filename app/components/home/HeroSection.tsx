@@ -87,6 +87,7 @@ export default function HeroSection() {
           key={i}
           className="absolute inset-0"
           style={{ y: parallaxY, scale: 1.2 }}
+          initial={{ opacity: i === 0 ? 0.4 : 0 }}
           animate={{ opacity: i === current ? 0.4 : 0 }}
           transition={{ duration: 1.4, ease: "easeInOut" }}
         >
