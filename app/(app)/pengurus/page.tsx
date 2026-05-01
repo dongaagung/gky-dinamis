@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { pengurus, kelompokPengurus } from "@/data/pengurus";
 import PengurusCard from "@/app/components/pengurus/PengurusCard";
+import PageHero from "@/app/components/ui/PageHero";
 
 export const metadata: Metadata = {
   title: "Pengurus — GKY Balikpapan",
@@ -10,16 +11,10 @@ export const metadata: Metadata = {
 export default function PengurusPage() {
   return (
     <>
-      <div className="bg-primary py-14">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-5xl font-bold text-white mb-3">
-            Struktur Pengurus
-          </h1>
-          <p className="text-white/70 text-base md:text-lg">
-            Mengenal para pelayan dan pengurus GKY Balikpapan
-          </p>
-        </div>
-      </div>
+      <PageHero
+        title="Struktur Pengurus"
+        subtitle="Mengenal para pelayan dan pengurus GKY Balikpapan"
+      />
 
       <div className="py-20 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 space-y-20">

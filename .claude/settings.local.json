@@ -11,7 +11,12 @@
       "Bash(curl -s http://localhost:3000/galeri)",
       "Bash(curl -s http://localhost:3000/video)",
       "Bash(pkill -f \"next dev\")",
-      "Bash(curl -s http://localhost:3000/kontak)"
+      "Bash(curl -s http://localhost:3000/kontak)",
+      "Bash(npm install *)",
+      "Bash(mkdir -p \"/Users/agungdonga/FILE NEGARA/💻 Project Pribadi/gky-profile/lib\")",
+      "Bash(mkdir -p \"/Users/agungdonga/FILE NEGARA/💻 Project Pribadi/gky-profile/hooks\")",
+      "Bash(mkdir -p \"/Users/agungdonga/FILE NEGARA/💻 Project Pribadi/gky-profile/components/ui\")",
+      "Bash(mkdir -p \"/Users/agungdonga/FILE NEGARA/💻 Project Pribadi/gky-profile/components/hooks\")"
     ]
   }
 }
