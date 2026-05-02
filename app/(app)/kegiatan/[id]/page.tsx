@@ -43,8 +43,17 @@ export default async function KegiatanDetailPage({
 
   return (
     <>
-      <div className="bg-primary py-10">
-        <div className="max-w-4xl mx-auto px-4">
+      <div className="relative bg-[#002F5F] py-16 overflow-hidden">
+        <Image
+          src={item.foto}
+          alt=""
+          fill
+          className="object-cover opacity-25"
+          priority
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#002F5F]/70 to-[#002F5F]/80" />
+        <div className="relative z-10 max-w-4xl mx-auto px-4">
           <nav className="flex items-center gap-2 text-white/60 text-sm mb-5">
             <Link href="/" className="hover:text-white transition-colors">Beranda</Link>
             <span>/</span>
@@ -85,7 +94,6 @@ export default async function KegiatanDetailPage({
             alt={item.judul}
             fill
             className="object-cover"
-            priority
             sizes="(max-width: 896px) 100vw, 896px"
           />
         </div>
