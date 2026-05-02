@@ -7,6 +7,16 @@ import sharp from "sharp";
 
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
+import { JadwalIbadah } from "./collections/JadwalIbadah";
+import { HeroSlide } from "./collections/HeroSlide";
+import { Pengurus } from "./collections/Pengurus";
+import { Kegiatan } from "./collections/Kegiatan";
+import { Galeri } from "./collections/Galeri";
+import { VideoKhotbah } from "./collections/VideoKhotbah";
+import { FAQ } from "./collections/FAQ";
+import { KontakPesan } from "./collections/KontakPesan";
+import { SiteSettings } from "./collections/SiteSettings";
+import { TentangGereja } from "./collections/TentangGereja";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -18,7 +28,8 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, JadwalIbadah, HeroSlide, Pengurus, Kegiatan, Galeri, VideoKhotbah, FAQ, KontakPesan],
+  globals: [SiteSettings, TentangGereja],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {

@@ -1,7 +1,13 @@
 import SectionTitle from "@/app/components/ui/SectionTitle";
-import { tentang } from "@/data/tentang";
 
-export default function SejarahSection() {
+type SejarahItem = {
+  id?: string | null
+  tahun: number
+  judul: string
+  deskripsi: string
+}
+
+export default function SejarahSection({ sejarah }: { sejarah: SejarahItem[] }) {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-4xl mx-auto px-4">
@@ -14,10 +20,10 @@ export default function SejarahSection() {
           <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gray-200 md:-translate-x-px" />
 
           <div className="space-y-10">
-            {tentang.sejarah.map((item, index) => {
-              const isEven = index % 2 === 0;
+            {sejarah.map((item, index) => {
+              const isEven = index % 2 === 0
               return (
-                <div key={item.tahun} className="relative flex items-start gap-6 md:gap-0">
+                <div key={item.id ?? item.tahun} className="relative flex items-start gap-6 md:gap-0">
                   <div className="absolute left-6 md:left-1/2 w-3 h-3 bg-accent rounded-full border-2 border-white shadow-sm md:-translate-x-1.5 mt-5" />
 
                   <div className="hidden md:block w-1/2" />
@@ -40,11 +46,11 @@ export default function SejarahSection() {
                     </div>
                   </div>
                 </div>
-              );
+              )
             })}
           </div>
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -1,9 +1,9 @@
 import Image from "next/image";
-import type { IVideoKhotbah } from "@/data/videoKhotbah";
+import type { VideoItem } from "@/app/components/video/VideoClient";
 
 interface VideoCardProps {
-  video: IVideoKhotbah;
-  onClick: (video: IVideoKhotbah) => void;
+  video: VideoItem;
+  onClick: (video: VideoItem) => void;
 }
 
 export default function VideoCard({ video, onClick }: VideoCardProps) {
@@ -51,9 +51,11 @@ export default function VideoCard({ video, onClick }: VideoCardProps) {
           {video.judul}
         </h3>
 
-        <p className="text-gray-500 text-xs leading-relaxed line-clamp-2">
-          {video.deskripsi}
-        </p>
+        {video.deskripsi && (
+          <p className="text-gray-500 text-xs leading-relaxed line-clamp-2">
+            {video.deskripsi}
+          </p>
+        )}
       </div>
     </article>
   );

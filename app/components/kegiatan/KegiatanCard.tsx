@@ -1,28 +1,57 @@
 import Image from "next/image";
 import Link from "next/link";
-import { type IKegiatan, kategoriWarna } from "@/data/kegiatan";
 
-interface KegiatanCardProps {
-  kegiatan: IKegiatan;
+export type KategoriKegiatan = "Ibadah" | "Persekutuan" | "Pelayanan Sosial" | "Pendidikan";
+
+export type KegiatanItem = {
+  id: string
+  slug: string
+  judul: string
+  kategori: string
+  tanggal: string
+  lokasi: string
+  deskripsi: string
+  foto?: { url?: string | null } | string | null
+  urlFoto?: string | null
 }
 
-export default function KegiatanCard({ kegiatan }: KegiatanCardProps) {
-  const warna = kategoriWarna[kegiatan.kategori];
+const KATEGORI_WARNA: Record<string, { bg: string; text: string }> = {
+  Ibadah: { bg: "bg-blue-100", text: "text-blue-800" },
+  Persekutuan: { bg: "bg-green-100", text: "text-green-800" },
+  "Pelayanan Sosial": { bg: "bg-orange-100", text: "text-orange-800" },
+  Pendidikan: { bg: "bg-purple-100", text: "text-purple-800" },
+}
+
+const DEFAULT_WARNA = { bg: "bg-gray-100", text: "text-gray-800" }
+
+export default function KegiatanCard({ kegiatan }: { kegiatan: KegiatanItem }) {
+  const warna = KATEGORI_WARNA[kegiatan.kategori] ?? DEFAULT_WARNA
+
+  const fotoUrl =
+    kegiatan.foto && typeof kegiatan.foto === "object"
+      ? (kegiatan.foto.url ?? null)
+      : kegiatan.urlFoto ?? null
 
   return (
     <article className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 overflow-hidden flex flex-col">
-      <div className="relative aspect-video overflow-hidden">
-        <Image
-          src={kegiatan.foto}
-          alt={kegiatan.judul}
-          fill
-          className="object-cover"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        />
+      <div className="relative aspect-video overflow-hidden bg-gray-100">
+        {fotoUrl ? (
+          <Image
+            src={fotoUrl}
+            alt={kegiatan.judul}
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <svg className="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-        <span
-          className={`absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full ${warna.bg} ${warna.text}`}
-        >
+        <span className={`absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full ${warna.bg} ${warna.text}`}>
           {kegiatan.kategori}
         </span>
       </div>
@@ -53,7 +82,7 @@ export default function KegiatanCard({ kegiatan }: KegiatanCardProps) {
         </p>
 
         <Link
-          href={`/kegiatan/${kegiatan.id}`}
+          href={`/kegiatan/${kegiatan.slug}`}
           className="mt-4 inline-flex items-center gap-1.5 text-primary font-semibold text-sm hover:gap-2.5 transition-all"
         >
           Lihat Detail
@@ -63,5 +92,5 @@ export default function KegiatanCard({ kegiatan }: KegiatanCardProps) {
         </Link>
       </div>
     </article>
-  );
+  )
 }

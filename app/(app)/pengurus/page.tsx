@@ -1,14 +1,44 @@
 import type { Metadata } from "next";
-import { pengurus, kelompokPengurus } from "@/data/pengurus";
-import PengurusCard from "@/app/components/pengurus/PengurusCard";
+import { getPayload } from "payload";
+import config from "@/payload.config";
+import PengurusCard, { type PengurusItem } from "@/app/components/pengurus/PengurusCard";
 import PageHero from "@/app/components/ui/PageHero";
 
 export const metadata: Metadata = {
   title: "Pengurus — GKY Balikpapan",
-  description: "Struktur pengurus dan pelayan jemaat GKY Balikpapan Balikpapan",
+  description: "Struktur pengurus dan pelayan jemaat GKY Balikpapan",
 };
 
-export default function PengurusPage() {
+const KELOMPOK_META = [
+  {
+    kategori: "Pelayan Firman",
+    deskripsi: "Pendeta yang melayani dan menggembalakan jemaat",
+  },
+  {
+    kategori: "Majelis Jemaat",
+    deskripsi: "Penatua dan diaken yang terpilih memimpin jemaat bersama",
+  },
+  {
+    kategori: "Karyawan Gereja",
+    deskripsi: "Staf yang mendukung pelayanan administrasi dan operasional gereja",
+  },
+] as const
+
+export default async function PengurusPage() {
+  const payload = await getPayload({ config });
+  const { docs } = await payload.find({
+    collection: "pengurus",
+    sort: "urutan",
+    limit: 200,
+  });
+
+  const byKategori = new Map<string, PengurusItem[]>();
+  for (const p of docs) {
+    const key = p.kategori as string;
+    if (!byKategori.has(key)) byKategori.set(key, []);
+    byKategori.get(key)!.push(p as unknown as PengurusItem);
+  }
+
   return (
     <>
       <PageHero
@@ -18,10 +48,9 @@ export default function PengurusPage() {
 
       <div className="py-20 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 space-y-20">
-          {kelompokPengurus.map((kelompok, kelompokIndex) => {
-            const anggota = pengurus.filter(
-              (p) => p.kategori === kelompok.kategori
-            );
+          {KELOMPOK_META.map((kelompok, kelompokIndex) => {
+            const anggota = byKategori.get(kelompok.kategori) ?? [];
+            if (anggota.length === 0) return null;
             const isFeatured = kelompok.kategori === "Pelayan Firman";
 
             return (
@@ -49,10 +78,7 @@ export default function PengurusPage() {
                   }
                 >
                   {anggota.map((p) => (
-                    <div
-                      key={p.id}
-                      className={isFeatured ? "w-48 md:w-56" : undefined}
-                    >
+                    <div key={p.id} className={isFeatured ? "w-48 md:w-56" : undefined}>
                       <PengurusCard pengurus={p} featured={isFeatured} />
                     </div>
                   ))}

@@ -1,50 +1,68 @@
 import Image from "next/image";
-import { tentang } from "@/data/tentang";
 
-const stats = [
-  {
-    label: "Tahun Berdiri",
-    value: String(tentang.profil.tahunBerdiri),
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-      </svg>
-    ),
-  },
-  {
-    label: "Jumlah Jemaat",
-    value: tentang.profil.jumlahJemaat,
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-  },
-  {
-    label: "Denominasi",
-    value: tentang.profil.denominasi,
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
-    ),
-  },
-];
+type ProfilProps = {
+  deskripsi: string
+  tahunBerdiri?: number | null
+  jumlahJemaat?: string | null
+  denominasi?: string | null
+  foto?: { url?: string | null } | string | null
+}
 
-export default function ProfilSection() {
+export default function ProfilSection({ profil }: { profil: ProfilProps }) {
+  const fotoUrl =
+    profil.foto && typeof profil.foto === "object" ? profil.foto.url : null
+
+  const stats = [
+    {
+      label: "Tahun Berdiri",
+      value: profil.tahunBerdiri ? String(profil.tahunBerdiri) : "—",
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      ),
+    },
+    {
+      label: "Jumlah Jemaat",
+      value: profil.jumlahJemaat ?? "—",
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+    },
+    {
+      label: "Denominasi",
+      value: profil.denominasi ?? "—",
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+      ),
+    },
+  ]
+
   return (
     <section className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="relative rounded-2xl overflow-hidden shadow-xl">
-            <Image
-              src={tentang.profil.foto}
-              alt="Gedung GKY Balikpapan"
-              width={720}
-              height={480}
-              className="w-full h-auto object-cover"
-              priority
-            />
+            {fotoUrl ? (
+              <Image
+                src={fotoUrl}
+                alt="Gedung GKY Balikpapan"
+                width={720}
+                height={480}
+                className="w-full h-auto object-cover"
+                priority
+              />
+            ) : (
+              <div className="w-full aspect-[3/2] bg-primary/10 flex items-center justify-center">
+                <svg className="w-16 h-16 text-primary/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+              </div>
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent" />
           </div>
 
@@ -62,7 +80,7 @@ export default function ProfilSection() {
             <div className="w-16 h-1 bg-accent rounded-full mb-6" />
 
             <p className="text-gray-600 leading-relaxed text-base md:text-lg whitespace-pre-line">
-              {tentang.profil.deskripsi}
+              {profil.deskripsi}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
@@ -80,5 +98,5 @@ export default function ProfilSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }

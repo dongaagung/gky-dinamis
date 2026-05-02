@@ -1,7 +1,5 @@
-import type { KategoriGaleri } from "@/data/galeri";
-
 interface GaleriFilterProps {
-  kategori: KategoriGaleri[];
+  kategori: string[];
   aktif: string;
   onChange: (k: string) => void;
   hitungPerKategori: Record<string, number>;

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import type { FAQ } from "@/data/faq";
+import type { FAQItem } from "@/app/components/faq/FAQClient";
 
 interface FaqItemProps {
-  item: FAQ;
+  item: FAQItem;
 }
 
 export default function FaqItem({ item }: FaqItemProps) {

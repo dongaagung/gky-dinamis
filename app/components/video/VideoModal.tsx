@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import type { IVideoKhotbah } from "@/data/videoKhotbah";
+import type { VideoItem } from "@/app/components/video/VideoClient";
 
 interface VideoModalProps {
-  video: IVideoKhotbah | null;
+  video: VideoItem | null;
   onClose: () => void;
 }
 

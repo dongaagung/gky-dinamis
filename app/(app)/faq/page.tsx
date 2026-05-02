@@ -1,22 +1,25 @@
-"use client";
-
-import { useState } from "react";
-import Link from "next/link";
+import type { Metadata } from "next";
 import Image from "next/image";
-import SectionTitle from "@/app/components/ui/SectionTitle";
-import FaqItem from "@/app/components/faq/FaqItem";
-import FaqFilter, { type KategoriFaq } from "@/app/components/faq/FaqFilter";
-import { faq } from "@/data/faq";
+import { getPayload } from "payload";
+import config from "@/payload.config";
+import FAQClient from "@/app/components/faq/FAQClient";
 
-export default function FaqPage() {
-  const [filter, setFilter] = useState<KategoriFaq>("semua");
+export const metadata: Metadata = {
+  title: "FAQ — GKY Balikpapan",
+  description: "Pertanyaan yang sering diajukan seputar GKY Balikpapan",
+};
 
-  const tampilkan =
-    filter === "semua" ? faq : faq.filter((item) => item.kategori === filter);
+export default async function FaqPage() {
+  const payload = await getPayload({ config });
+
+  const { docs } = await payload.find({
+    collection: "faq",
+    sort: "urutan",
+    limit: 200,
+  });
 
   return (
     <main className="min-h-screen">
-      {/* Hero */}
       <section className="relative bg-[#002F5F] py-14 overflow-hidden">
         <Image
           src="https://images.unsplash.com/photo-1438032005730-c779502df39b?w=1600&q=80"
@@ -36,41 +39,14 @@ export default function FaqPage() {
         </div>
       </section>
 
-      {/* FAQ Content */}
-      <section className="max-w-3xl mx-auto px-4 py-14">
-        <div className="mb-8">
-          <SectionTitle title="FAQ" subtitle="Klik pertanyaan untuk melihat jawaban." />
-        </div>
-
-        <div className="mb-8">
-          <FaqFilter aktif={filter} onChange={setFilter} />
-        </div>
-
-        {tampilkan.length > 0 ? (
-          <div className="flex flex-col gap-3">
-            {tampilkan.map((item) => (
-              <FaqItem key={item.id} item={item} />
-            ))}
-          </div>
-        ) : (
-          <p className="text-center text-gray-400 py-8">
-            Tidak ada FAQ untuk kategori ini.
-          </p>
-        )}
-
-        {/* CTA */}
-        <div className="mt-12 text-center bg-gray-50 rounded-xl py-8 px-6">
-          <p className="text-gray-600 mb-4 text-sm md:text-base">
-            Masih ada pertanyaan? Kami siap membantu.
-          </p>
-          <Link
-            href="/kontak"
-            className="inline-block bg-primary text-white px-6 py-3 rounded-full font-semibold text-sm hover:bg-primary/90 transition-colors duration-200"
-          >
-            Hubungi Kami
-          </Link>
-        </div>
-      </section>
+      <FAQClient
+        items={docs.map((d) => ({
+          id: String(d.id),
+          pertanyaan: d.pertanyaan,
+          jawaban: d.jawaban,
+          kategori: d.kategori as "umum" | "ibadah" | "pelayanan",
+        }))}
+      />
     </main>
   );
 }

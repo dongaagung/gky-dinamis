@@ -1,15 +1,22 @@
 import type { Metadata } from "next";
-import { kegiatan } from "@/data/kegiatan";
+import { getPayload } from "payload";
+import config from "@/payload.config";
 import KegiatanCard from "@/app/components/kegiatan/KegiatanCard";
 import SectionTitle from "@/app/components/ui/SectionTitle";
 import PageHero from "@/app/components/ui/PageHero";
 
 export const metadata: Metadata = {
   title: "Kegiatan — GKY Balikpapan",
-  description: "Daftar kegiatan dan program pelayanan GKY Balikpapan Balikpapan",
+  description: "Daftar kegiatan dan program pelayanan GKY Balikpapan",
 };
 
-export default function KegiatanPage() {
+export default async function KegiatanPage() {
+  const payload = await getPayload({ config });
+  const { docs, totalDocs } = await payload.find({
+    collection: "kegiatan",
+    limit: 100,
+  });
+
   return (
     <>
       <PageHero
@@ -21,11 +28,11 @@ export default function KegiatanPage() {
         <div className="max-w-6xl mx-auto px-4">
           <SectionTitle
             title="Semua Kegiatan"
-            subtitle={`${kegiatan.length} kegiatan tercatat`}
+            subtitle={`${totalDocs} kegiatan tercatat`}
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-            {kegiatan.map((item) => (
+            {docs.map((item) => (
               <KegiatanCard key={item.id} kegiatan={item} />
             ))}
           </div>

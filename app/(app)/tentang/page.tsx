@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { getPayload } from "payload";
+import config from "@/payload.config";
 import ProfilSection from "@/app/components/tentang/ProfilSection";
 import VisiMisiSection from "@/app/components/tentang/VisiMisiSection";
 import SejarahSection from "@/app/components/tentang/SejarahSection";
@@ -9,7 +11,10 @@ export const metadata: Metadata = {
   description: "Profil, visi misi, dan sejarah GKY Balikpapan Balikpapan",
 };
 
-export default function TentangPage() {
+export default async function TentangPage() {
+  const payload = await getPayload({ config });
+  const tentang = await payload.findGlobal({ slug: "tentang-gereja" });
+
   return (
     <>
       <PageHero
@@ -17,9 +22,20 @@ export default function TentangPage() {
         subtitle="Mengenal lebih dekat GKY Balikpapan — sejarah, visi, dan misi kami"
       />
 
-      <ProfilSection />
-      <VisiMisiSection />
-      <SejarahSection />
+      <ProfilSection
+        profil={{
+          deskripsi: tentang.deskripsi ?? "",
+          tahunBerdiri: tentang.tahunBerdiri,
+          jumlahJemaat: tentang.jumlahJemaat,
+          denominasi: tentang.denominasi,
+          foto: tentang.foto,
+        }}
+      />
+      <VisiMisiSection
+        visi={tentang.visi ?? ""}
+        misi={tentang.misi ?? []}
+      />
+      <SejarahSection sejarah={tentang.sejarah ?? []} />
     </>
   );
 }

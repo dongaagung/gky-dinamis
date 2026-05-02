@@ -4,33 +4,23 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { siteInfo } from "@/data/siteInfo"
 import { GooeyFilter } from "@/components/ui/gooey-filter"
 import { PixelTrail } from "@/components/ui/pixel-trail"
 import { useScreenSize } from "@/hooks/use-screen-size"
 
-const slides = [
-  {
-    src: "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=1600&q=80",
-    alt: "Interior gereja",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=1600&q=80",
-    alt: "Alkitab dan doa",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1600&q=80",
-    alt: "Komunitas jemaat",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1519741497674-611481863552?w=1600&q=80",
-    alt: "Ibadah bersama",
-  },
-]
+type Slide = { src: string; alt: string }
 
 const SLIDE_INTERVAL = 5000
 
-export default function HeroSection() {
+export default function HeroSection({
+  namaGereja,
+  tagline,
+  slides,
+}: {
+  namaGereja: string
+  tagline: string
+  slides: Slide[]
+}) {
   const screenSize = useScreenSize()
   const [current, setCurrent] = useState(0)
   const [paused, setPaused] = useState(false)
@@ -55,7 +45,7 @@ export default function HeroSection() {
     intervalRef.current = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length)
     }, SLIDE_INTERVAL)
-  }, [stopTimer])
+  }, [stopTimer, slides.length])
 
   useEffect(() => {
     if (!paused) startTimer()
@@ -143,11 +133,11 @@ export default function HeroSection() {
       {/* Content */}
       <div className="relative z-30 max-w-6xl mx-auto px-4 py-24 text-center w-full">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-5 leading-tight tracking-tight">
-          {siteInfo.namaGereja}
+          {namaGereja}
         </h1>
 
         <p className="text-lg md:text-xl lg:text-2xl text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed">
-          {siteInfo.tagline}
+          {tagline}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -155,13 +145,13 @@ export default function HeroSection() {
             href="#jadwal-ibadah"
             className="bg-accent hover:bg-accent-hover text-white font-semibold px-8 py-3.5 rounded-full transition-colors shadow-lg shadow-accent/20"
           >
-            Jadwal Ibadah
+            JADWAL IBADAH
           </Link>
           <Link
             href="/tentang"
             className="bg-white/10 hover:bg-white/20 text-white font-semibold px-8 py-3.5 rounded-full border border-white/30 transition-colors"
           >
-            Tentang Kami
+            TENTANG KAMI
           </Link>
         </div>
       </div>

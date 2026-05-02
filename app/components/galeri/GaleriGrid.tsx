@@ -2,10 +2,23 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import type { IGaleri } from "@/data/galeri";
 
-function GaleriCard({ item, onClick }: { item: IGaleri; onClick: () => void }) {
+export type GaleriItem = {
+  id: string
+  keterangan: string
+  kategori: string
+  foto?: { url?: string | null } | string | null
+  urlFoto?: string | null
+}
+
+function resolveFotoUrl(item: GaleriItem): string | null {
+  if (item.foto && typeof item.foto === "object") return item.foto.url ?? null;
+  return item.urlFoto ?? null;
+}
+
+function GaleriCard({ item, onClick }: { item: GaleriItem; onClick: () => void }) {
   const [loaded, setLoaded] = useState(false);
+  const fotoUrl = resolveFotoUrl(item);
 
   return (
     <button
@@ -18,17 +31,25 @@ function GaleriCard({ item, onClick }: { item: IGaleri; onClick: () => void }) {
           {!loaded && (
             <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-gray-200 to-gray-100" />
           )}
-          <Image
-            src={item.foto}
-            alt={item.keterangan}
-            fill
-            loading="lazy"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className={`object-cover transition-all duration-500 group-hover:scale-[1.04] ${
-              loaded ? "opacity-100" : "opacity-0"
-            }`}
-            onLoad={() => setLoaded(true)}
-          />
+          {fotoUrl ? (
+            <Image
+              src={fotoUrl}
+              alt={item.keterangan}
+              fill
+              loading="lazy"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className={`object-cover transition-all duration-500 group-hover:scale-[1.04] ${
+                loaded ? "opacity-100" : "opacity-0"
+              }`}
+              onLoad={() => setLoaded(true)}
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <svg className="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
 
@@ -50,11 +71,7 @@ function GaleriCard({ item, onClick }: { item: IGaleri; onClick: () => void }) {
   );
 }
 
-interface GaleriGridProps {
-  items: IGaleri[];
-}
-
-export default function GaleriGrid({ items }: GaleriGridProps) {
+export default function GaleriGrid({ items }: { items: GaleriItem[] }) {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const isOpen = selectedIdx !== null;
   const selected = isOpen ? items[selectedIdx] : null;
@@ -88,23 +105,15 @@ export default function GaleriGrid({ items }: GaleriGridProps) {
   if (items.length === 0) {
     return (
       <div className="text-center py-20 text-gray-400">
-        <svg
-          className="w-12 h-12 mx-auto mb-3 opacity-30"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-          />
+        <svg className="w-12 h-12 mx-auto mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
         <p className="text-sm">Belum ada foto untuk kategori ini.</p>
       </div>
     );
   }
+
+  const selectedFotoUrl = selected ? resolveFotoUrl(selected) : null;
 
   return (
     <>
@@ -137,14 +146,16 @@ export default function GaleriGrid({ items }: GaleriGridProps) {
             </button>
 
             <div className="relative aspect-video bg-gray-100">
-              <Image
-                src={selected.foto}
-                alt={selected.keterangan}
-                fill
-                className="object-contain"
-                sizes="(max-width: 768px) 100vw, 768px"
-                priority
-              />
+              {selectedFotoUrl && (
+                <Image
+                  src={selectedFotoUrl}
+                  alt={selected.keterangan}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 768px"
+                  priority
+                />
+              )}
             </div>
 
             <div className="flex items-center justify-between px-5 py-4 bg-white">
@@ -162,7 +173,7 @@ export default function GaleriGrid({ items }: GaleriGridProps) {
               <div className="text-center">
                 <p className="text-sm font-semibold text-gray-800">{selected.keterangan}</p>
                 <p className="text-xs text-gray-400 mt-0.5">
-                  {selectedIdx + 1} / {items.length}
+                  {(selectedIdx ?? 0) + 1} / {items.length}
                 </p>
               </div>
 

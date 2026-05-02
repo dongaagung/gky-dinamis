@@ -2,21 +2,31 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { kegiatan, kategoriWarna } from "@/data/kegiatan";
+import { getPayload } from "payload";
+import config from "@/payload.config";
 
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return kegiatan.map((k) => ({ id: String(k.id) }));
+const KATEGORI_WARNA: Record<string, { bg: string; text: string }> = {
+  Ibadah: { bg: "bg-blue-100", text: "text-blue-800" },
+  Persekutuan: { bg: "bg-green-100", text: "text-green-800" },
+  "Pelayanan Sosial": { bg: "bg-orange-100", text: "text-orange-800" },
+  Pendidikan: { bg: "bg-purple-100", text: "text-purple-800" },
 }
+
+const DEFAULT_WARNA = { bg: "bg-gray-100", text: "text-gray-800" }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
-  const item = kegiatan.find((k) => String(k.id) === id);
+  const { slug } = await params;
+  const payload = await getPayload({ config });
+  const { docs } = await payload.find({
+    collection: "kegiatan",
+    where: { slug: { equals: slug } },
+    limit: 1,
+  });
+  const item = docs[0];
   if (!item) return {};
   return {
     title: `${item.judul} — GKY Balikpapan`,
@@ -27,31 +37,44 @@ export async function generateMetadata({
 export default async function KegiatanDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = await params;
-  const item = kegiatan.find((k) => String(k.id) === id);
+  const { slug } = await params;
+  const payload = await getPayload({ config });
+  const { docs } = await payload.find({
+    collection: "kegiatan",
+    where: { slug: { equals: slug } },
+    limit: 1,
+  });
 
+  const item = docs[0];
   if (!item) notFound();
 
-  const warna = kategoriWarna[item.kategori];
+  const warna = KATEGORI_WARNA[item.kategori] ?? DEFAULT_WARNA
 
-  const paragraphs = item.deskripsiLengkap
+  const fotoUrl =
+    item.foto && typeof item.foto === "object"
+      ? (item.foto as { url?: string | null }).url ?? null
+      : item.urlFoto ?? null
+
+  const paragraphs = (item.deskripsiLengkap ?? "")
     .split("\n\n")
     .map((p) => p.trim())
-    .filter(Boolean);
+    .filter(Boolean)
 
   return (
     <>
       <div className="relative bg-[#002F5F] py-16 overflow-hidden">
-        <Image
-          src={item.foto}
-          alt=""
-          fill
-          className="object-cover opacity-25"
-          priority
-          sizes="100vw"
-        />
+        {fotoUrl && (
+          <Image
+            src={fotoUrl}
+            alt=""
+            fill
+            className="object-cover opacity-25"
+            priority
+            sizes="100vw"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-[#002F5F]/70 to-[#002F5F]/80" />
         <div className="relative z-10 max-w-4xl mx-auto px-4">
           <nav className="flex items-center gap-2 text-white/60 text-sm mb-5">
@@ -88,15 +111,17 @@ export default async function KegiatanDetailPage({
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-12">
-        <div className="relative aspect-video rounded-2xl overflow-hidden shadow-lg mb-10">
-          <Image
-            src={item.foto}
-            alt={item.judul}
-            fill
-            className="object-cover"
-            sizes="(max-width: 896px) 100vw, 896px"
-          />
-        </div>
+        {fotoUrl && (
+          <div className="relative aspect-video rounded-2xl overflow-hidden shadow-lg mb-10">
+            <Image
+              src={fotoUrl}
+              alt={item.judul}
+              fill
+              className="object-cover"
+              sizes="(max-width: 896px) 100vw, 896px"
+            />
+          </div>
+        )}
 
         <div className="prose prose-lg max-w-none">
           {paragraphs.map((para, i) => (
@@ -106,7 +131,7 @@ export default async function KegiatanDetailPage({
           ))}
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col sm:flex-row gap-4">
+        <div className="mt-12 pt-8 border-t border-gray-200">
           <Link
             href="/kegiatan"
             className="inline-flex items-center gap-2 text-primary font-semibold hover:underline"

@@ -1,25 +1,31 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { videoKhotbah, type IVideoKhotbah } from "@/data/videoKhotbah";
 import VideoCard from "@/app/components/video/VideoCard";
 import VideoModal from "@/app/components/video/VideoModal";
-import SectionTitle from "@/app/components/ui/SectionTitle";
 
-export default function VideoSection() {
-  const [selected, setSelected] = useState<IVideoKhotbah | null>(null);
+export type VideoItem = {
+  id: string;
+  judul: string;
+  pembicara: string;
+  tanggal: string;
+  youtubeId: string;
+  deskripsi?: string | null;
+};
+
+interface VideoClientProps {
+  videos: VideoItem[];
+}
+
+export default function VideoClient({ videos }: VideoClientProps) {
+  const [selected, setSelected] = useState<VideoItem | null>(null);
   const handleClose = useCallback(() => setSelected(null), []);
 
   return (
     <section className="py-20 bg-gray-50">
       <div className="max-w-6xl mx-auto px-4">
-        <SectionTitle
-          title="Video Khotbah"
-          subtitle="Dengarkan dan saksikan kembali khotbah-khotbah terpilih dari GKY Balikpapan"
-        />
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-12">
-          {videoKhotbah.map((video) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {videos.map((video) => (
             <VideoCard key={video.id} video={video} onClick={setSelected} />
           ))}
         </div>

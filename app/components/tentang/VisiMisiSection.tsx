@@ -1,7 +1,16 @@
 import SectionTitle from "@/app/components/ui/SectionTitle";
-import { tentang } from "@/data/tentang";
 
-export default function VisiMisiSection() {
+type MisiItem = {
+  id?: string | null
+  poin: string
+}
+
+type VisiMisiProps = {
+  visi: string
+  misi: MisiItem[]
+}
+
+export default function VisiMisiSection({ visi, misi }: VisiMisiProps) {
   return (
     <section className="py-20 bg-gray-50">
       <div className="max-w-6xl mx-auto px-4">
@@ -20,9 +29,7 @@ export default function VisiMisiSection() {
                 </svg>
                 Visi
               </div>
-              <h3 className="text-xl md:text-2xl font-bold leading-relaxed">
-                {tentang.visi}
-              </h3>
+              <h3 className="text-xl md:text-2xl font-bold leading-relaxed">{visi}</h3>
             </div>
           </div>
 
@@ -36,12 +43,12 @@ export default function VisiMisiSection() {
             <h3 className="text-xl font-bold text-primary mb-6">Panggilan Pelayanan Kami</h3>
 
             <ul className="space-y-4">
-              {tentang.misi.map((item, index) => (
-                <li key={index} className="flex items-start gap-3">
+              {misi.map((item, index) => (
+                <li key={item.id ?? index} className="flex items-start gap-3">
                   <span className="flex-shrink-0 w-6 h-6 bg-accent/10 text-accent rounded-full flex items-center justify-center text-xs font-bold mt-0.5">
                     {index + 1}
                   </span>
-                  <p className="text-gray-600 leading-relaxed">{item}</p>
+                  <p className="text-gray-600 leading-relaxed">{item.poin}</p>
                 </li>
               ))}
             </ul>
@@ -49,5 +56,5 @@ export default function VisiMisiSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }
