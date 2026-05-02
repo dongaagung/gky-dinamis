@@ -28,10 +28,11 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${scrolled ? "shadow-lg shadow-gray-300/60" : "shadow-sm shadow-gray-200/40"}`}>
+    <nav
+      className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${scrolled ? "shadow-xl shadow-black-500/60" : "shadow-xl shadow-black-500/20"}`}
+    >
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
@@ -61,7 +62,9 @@ export default function Navbar() {
                 >
                   <span
                     className={`text-sm font-bold tracking-wider transition-colors duration-200 ${
-                      isActive ? "text-primary" : "text-gray-500 group-hover:text-primary"
+                      isActive
+                        ? "text-primary"
+                        : "text-gray-500 group-hover:text-primary"
                     }`}
                   >
                     {link.label}
@@ -86,12 +89,32 @@ export default function Navbar() {
             aria-label="Toggle menu"
           >
             {isOpen ? (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             ) : (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             )}
           </button>
