@@ -16,7 +16,12 @@
       "Bash(mkdir -p \"/Users/agungdonga/FILE NEGARA/💻 Project Pribadi/gky-profile/lib\")",
       "Bash(mkdir -p \"/Users/agungdonga/FILE NEGARA/💻 Project Pribadi/gky-profile/hooks\")",
       "Bash(mkdir -p \"/Users/agungdonga/FILE NEGARA/💻 Project Pribadi/gky-profile/components/ui\")",
-      "Bash(mkdir -p \"/Users/agungdonga/FILE NEGARA/💻 Project Pribadi/gky-profile/components/hooks\")"
+      "Bash(mkdir -p \"/Users/agungdonga/FILE NEGARA/💻 Project Pribadi/gky-profile/components/hooks\")",
+      "Bash(git restore *)",
+      "Bash(psql \"postgresql://neondb_owner:npg_Ttm37HjwryGv@ep-little-bread-aoy9cy8c.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require\" -c \"SELECT 1;\")",
+      "Bash(node -e ' *)",
+      "Bash(curl -s --max-time 10 -o /dev/null -w \"%{http_code} %{time_connect}\" \"https://ep-little-bread-aoy9cy8c.c-2.ap-southeast-1.aws.neon.tech\")",
+      "Bash(nc -zv -w 5 ep-little-bread-aoy9cy8c.c-2.ap-southeast-1.aws.neon.tech 5432)"
     ]
   }
 }
