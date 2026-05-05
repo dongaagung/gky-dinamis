@@ -1,7 +1,9 @@
 import { getPayload } from "payload";
 import config from "@/payload.config";
 import HeroSection from "@/app/components/home/HeroSection";
+import HighlightStrip from "@/app/components/home/HighlightStrip";
 import JadwalIbadahSection from "@/app/components/home/JadwalIbadahSection";
+import VerseSection from "@/app/components/home/VerseSection";
 import MenuRingkasanSection from "@/app/components/home/MenuRingkasanSection";
 
 export default async function HomePage() {
@@ -32,7 +34,9 @@ export default async function HomePage() {
         tagline={siteSettings.tagline ?? ""}
         slides={slides}
       />
+      <HighlightStrip />
       <JadwalIbadahSection jadwal={jadwal} />
+      <VerseSection />
       <MenuRingkasanSection />
     </>
   );

@@ -21,7 +21,7 @@ export default async function VideoPage() {
   return (
     <>
       <PageHero
-        title="Video Khotbah"
+        title="Media Video"
         subtitle="Saksikan kembali khotbah dan ibadah GKY Balikpapan"
       />
       <VideoClient videos={videos.map((v) => ({

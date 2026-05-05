@@ -58,7 +58,6 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   className="group relative flex flex-col items-center gap-0.5 pb-0.5"
-                  style={{ fontFamily: "var(--font-lato)" }}
                 >
                   <span
                     className={`text-sm font-bold tracking-wider transition-colors duration-200 ${
@@ -138,7 +137,6 @@ export default function Navbar() {
                       ? "text-primary bg-primary/5 border-l-2 border-accent"
                       : "text-gray-500 hover:text-primary hover:bg-gray-50 hover:border-l-2 hover:border-primary border-l-2 border-transparent"
                   }`}
-                  style={{ fontFamily: "var(--font-lato)" }}
                   onClick={() => setIsOpen(false)}
                 >
                   {link.label}
