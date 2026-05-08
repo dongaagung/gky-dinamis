@@ -1,57 +1,62 @@
 import type { CollectionConfig } from 'payload'
 
 export const Pengurus: CollectionConfig = {
-  slug: 'pengurus',
+  slug: "pengurus",
+  labels: {
+    singular: "Pengurus",
+    plural: "Pengurus", // <-- ini yang penting, override "Penguruses"
+  },
   admin: {
-    useAsTitle: 'nama',
-    defaultColumns: ['nama', 'jabatan', 'kategori', 'urutan'],
-    group: 'Konten',
+    useAsTitle: "nama",
+    defaultColumns: ["nama", "jabatan", "kategori", "urutan"],
+    group: "Konten",
   },
   fields: [
     {
-      name: 'nama',
-      type: 'text',
+      name: "nama",
+      type: "text",
       required: true,
     },
     {
-      name: 'jabatan',
-      type: 'text',
+      name: "jabatan",
+      type: "text",
       required: true,
       admin: {
-        description: 'Contoh: Pendeta Jemaat, Ketua Majelis',
+        description: "Contoh: Pendeta Jemaat, Ketua Majelis",
       },
     },
     {
-      name: 'kategori',
-      type: 'select',
+      name: "kategori",
+      type: "select",
       required: true,
       options: [
-        { label: 'Pelayan Firman', value: 'Pelayan Firman' },
-        { label: 'Majelis Jemaat', value: 'Majelis Jemaat' },
-        { label: 'Karyawan Gereja', value: 'Karyawan Gereja' },
+        { label: "Pelayan Firman", value: "Pelayan Firman" },
+        { label: "Majelis Jemaat", value: "Majelis Jemaat" },
+        { label: "Karyawan Gereja", value: "Karyawan Gereja" },
       ],
     },
     {
-      name: 'foto',
-      type: 'upload',
-      relationTo: 'media',
+      name: "foto",
+      type: "upload",
+      relationTo: "media",
       admin: {
-        description: 'Upload foto dari komputer (prioritas utama jika diisi)',
+        description: "Upload foto dari komputer (prioritas utama jika diisi)",
       },
     },
     {
-      name: 'urlFoto',
-      type: 'text',
+      name: "urlFoto",
+      type: "text",
       admin: {
-        description: 'URL foto eksternal — digunakan jika field Foto di atas kosong',
+        description:
+          "URL foto eksternal — digunakan jika field Foto di atas kosong",
       },
     },
     {
-      name: 'urutan',
-      type: 'number',
+      name: "urutan",
+      type: "number",
       admin: {
-        description: 'Angka kecil tampil lebih dulu dalam kelompoknya',
+        description: "Angka kecil tampil lebih dulu dalam kelompoknya",
       },
     },
   ],
-}
+};

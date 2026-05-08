@@ -1,53 +1,58 @@
 import type { CollectionConfig } from 'payload'
 
 export const Galeri: CollectionConfig = {
-  slug: 'galeri',
+  slug: "galeri",
+  labels: {
+    singular: "Galeri",
+    plural: "Galeri", // <-- ini yang penting, override "Galeris"
+  },
   admin: {
-    useAsTitle: 'keterangan',
-    defaultColumns: ['keterangan', 'kategori', 'urutan'],
-    group: 'Konten',
+    useAsTitle: "keterangan",
+    defaultColumns: ["keterangan", "kategori", "urutan"],
+    group: "Konten",
   },
   fields: [
     {
-      name: 'foto',
-      type: 'upload',
-      relationTo: 'media',
+      name: "foto",
+      type: "upload",
+      relationTo: "media",
       admin: {
-        description: 'Upload foto dari komputer (prioritas utama jika diisi)',
+        description: "Upload foto dari komputer (prioritas utama jika diisi)",
       },
     },
     {
-      name: 'urlFoto',
-      type: 'text',
+      name: "urlFoto",
+      type: "text",
       admin: {
-        description: 'URL foto eksternal — digunakan jika field Foto di atas kosong',
+        description:
+          "URL foto eksternal — digunakan jika field Foto di atas kosong",
       },
     },
     {
-      name: 'keterangan',
-      type: 'text',
+      name: "keterangan",
+      type: "text",
       required: true,
       admin: {
-        description: 'Contoh: Ibadah Natal 2024',
+        description: "Contoh: Ibadah Natal 2024",
       },
     },
     {
-      name: 'kategori',
-      type: 'select',
+      name: "kategori",
+      type: "select",
       required: true,
       options: [
-        { label: 'Ibadah', value: 'Ibadah' },
-        { label: 'Kegiatan', value: 'Kegiatan' },
-        { label: 'Persekutuan', value: 'Persekutuan' },
-        { label: 'Bangunan', value: 'Bangunan' },
+        { label: "Ibadah", value: "Ibadah" },
+        { label: "Kegiatan", value: "Kegiatan" },
+        { label: "Persekutuan", value: "Persekutuan" },
+        { label: "Bangunan", value: "Bangunan" },
       ],
     },
     {
-      name: 'urutan',
-      type: 'number',
+      name: "urutan",
+      type: "number",
       admin: {
-        description: 'Angka kecil tampil lebih dulu',
+        description: "Angka kecil tampil lebih dulu",
       },
     },
   ],
-}
+};

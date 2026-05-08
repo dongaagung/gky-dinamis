@@ -2,6 +2,10 @@ import type { CollectionConfig } from "payload";
 
 export const VideoKhotbah: CollectionConfig = {
   slug: "video-khotbah",
+  labels: {
+    singular: "Media Video",
+    plural: "Media Video",
+  },
   admin: {
     useAsTitle: "judul",
     group: "Konten",

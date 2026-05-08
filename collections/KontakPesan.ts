@@ -2,6 +2,10 @@ import type { CollectionConfig } from "payload";
 
 export const KontakPesan: CollectionConfig = {
   slug: "kontak-pesan",
+  labels: {
+    singular: "Pesan Kontak",
+    plural: "Pesan Kontak",
+  },
   admin: {
     useAsTitle: "nama",
     group: "Administrasi",

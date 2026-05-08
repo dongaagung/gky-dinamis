@@ -1,4 +1,5 @@
 import { postgresAdapter } from "@payloadcms/db-postgres";
+import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import path from "path";
 import { buildConfig } from "payload";
@@ -27,6 +28,13 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      views: {
+        dashboard: {
+          Component: '@/components/admin/Dashboard#Dashboard',
+        },
+      },
+    },
   },
   collections: [Users, Media, JadwalIbadah, HeroSlide, Pengurus, Kegiatan, Galeri, VideoKhotbah, FAQ, KontakPesan],
   globals: [SiteSettings, TentangGereja],
@@ -42,5 +50,13 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [],
+  plugins: [
+    vercelBlobStorage({
+      enabled: true,
+      collections: {
+        media: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
+  ],
 });
