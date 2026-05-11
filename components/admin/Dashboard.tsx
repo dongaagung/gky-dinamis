@@ -1,26 +1,13 @@
 import React from 'react'
+import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { Card } from './Card'
-import { Chart } from './Chart'
-
-const MONTHLY_CHART_DATA = [
-  { name: 'Jan', value: 3 },
-  { name: 'Feb', value: 5 },
-  { name: 'Mar', value: 4 },
-  { name: 'Apr', value: 8 },
-  { name: 'Mei', value: 6 },
-  { name: 'Jun', value: 11 },
-  { name: 'Jul', value: 7 },
-  { name: 'Agu', value: 13 },
-  { name: 'Sep', value: 10 },
-  { name: 'Okt', value: 15 },
-  { name: 'Nov', value: 12 },
-  { name: 'Des', value: 9 },
-]
+import { GreetingBanner } from './GreetingBanner'
 
 export async function Dashboard() {
   const payload = await getPayload({ config })
+  const { user } = await payload.auth({ headers: await headers() })
 
   const [
     { totalDocs: totalKegiatan },
@@ -44,9 +31,8 @@ export async function Dashboard() {
     }),
   ])
 
-  const now = new Date()
-  const greeting =
-    now.getHours() < 12 ? 'Selamat pagi' : now.getHours() < 17 ? 'Selamat siang' : 'Selamat malam'
+  const u = user as { name?: string; email?: string } | null
+  const userName = u?.name || (u?.email ? u.email.split('@')[0] : 'Admin')
 
   return (
     <div
@@ -61,27 +47,20 @@ export async function Dashboard() {
     >
       {/* ─── Header ─── */}
       <div style={{ marginBottom: "2rem" }}>
-        <p
-          style={{
-            fontSize: "0.875rem",
-            color: "#9CA3AF",
-            margin: "0 0 0.25rem",
-            fontWeight: 500,
-          }}
-        >
-          {greeting} 👋
-        </p>
         <h1
           style={{
-            fontSize: "1.625rem",
+            fontSize: "1.375rem",
             fontWeight: 700,
             color: "#111827",
             margin: 0,
-            letterSpacing: "-0.025em",
+            letterSpacing: "-0.02em",
           }}
         >
           Dashboard GKY
         </h1>
+        <p style={{ fontSize: "0.8125rem", color: "#9CA3AF", margin: "0.25rem 0 0", fontWeight: 400 }}>
+          Kelola konten gereja dari satu tempat
+        </p>
       </div>
 
       {/* ─── Stat Cards ─── */}
@@ -136,7 +115,7 @@ export async function Dashboard() {
           marginBottom: "1.5rem",
         }}
       >
-        <Chart data={MONTHLY_CHART_DATA} title="Aktivitas Konten · 2025" />
+        <GreetingBanner userName={userName} />
 
         {/* Quick Actions */}
         <div
