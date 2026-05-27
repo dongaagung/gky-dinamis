@@ -10,7 +10,6 @@ export const KontakPesan: CollectionConfig = {
     useAsTitle: "nama",
     group: "Administrasi",
     defaultColumns: ["nama", "nomorWA", "dibaca", "createdAt"],
-    defaultSort: "-createdAt",
   },
   access: {
     create: () => false,

@@ -169,7 +169,7 @@ export async function GET() {
     { nama: "Daniel Saputra", jabatan: "Kepala Tata Usaha", kategori: "Karyawan Gereja", urlFoto: "https://placehold.co/300x300/4a5568/ffffff?text=DS", urutan: 1 },
     { nama: "Putri Sari", jabatan: "Staf Administrasi", kategori: "Karyawan Gereja", urlFoto: "https://placehold.co/300x300/4a5568/ffffff?text=PS", urutan: 2 },
     { nama: "Agus Setiawan", jabatan: "Teknisi & Sound System", kategori: "Karyawan Gereja", urlFoto: "https://placehold.co/300x300/4a5568/ffffff?text=AS", urutan: 3 },
-  ];
+  ] as const;
 
   for (const data of pengurusData) {
     await payload.create({ collection: "pengurus", data });
@@ -252,7 +252,7 @@ export async function GET() {
       deskripsiLengkap: "Dalam rangka meningkatkan kualitas pelayanan ibadah, GKY Balikpapan mengadakan Pelatihan Pelayan Ibadah yang diikuti oleh lebih dari 50 anggota tim pelayanan. Pelatihan ini mencakup tiga bidang utama: tim worship, tim penyambut jemaat, dan tim pembaca firman.\n\nSesi pelatihan dirancang secara praktis oleh tim majelis bidang ibadah, dengan mengundang instruktur vokal dan musik dari luar untuk memperkaya sesi tim worship. Sementara itu, tim penyambut mendapat materi tentang keramahan pelayanan, dan tim pembaca mendapat panduan tentang teknik membaca firman yang baik dan penuh penghayatan.\n\nPelatihan berlangsung dari pagi hingga sore hari dan diakhiri dengan sesi simulasi ibadah lengkap.",
       urlFoto: "https://placehold.co/800x500/553c9a/ffffff?text=Pelatihan+Pelayan",
     },
-  ];
+  ] as const;
 
   for (const data of kegiatanData) {
     await payload.create({ collection: "kegiatan", data });
@@ -280,7 +280,7 @@ export async function GET() {
     { keterangan: "Gedung Gereja Tampak Depan", kategori: "Bangunan", urlFoto: "https://images.unsplash.com/photo-1548625361-58a9b86aa83b?w=800&q=80", urutan: 13 },
     { keterangan: "Interior Aula Utama", kategori: "Bangunan", urlFoto: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80", urutan: 14 },
     { keterangan: "Taman Gereja", kategori: "Bangunan", urlFoto: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80", urutan: 15 },
-  ];
+  ] as const;
 
   for (const data of galeriData) {
     await payload.create({ collection: "galeri", data });

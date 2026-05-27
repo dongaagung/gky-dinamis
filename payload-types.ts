@@ -69,6 +69,14 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    'jadwal-ibadah': JadwalIbadah;
+    'hero-slide': HeroSlide;
+    pengurus: Pengurus;
+    kegiatan: Kegiatan;
+    galeri: Galeri;
+    'video-khotbah': VideoKhotbah;
+    faq: Faq;
+    'kontak-pesan': KontakPesan;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +86,14 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'jadwal-ibadah': JadwalIbadahSelect<false> | JadwalIbadahSelect<true>;
+    'hero-slide': HeroSlideSelect<false> | HeroSlideSelect<true>;
+    pengurus: PengurusSelect<false> | PengurusSelect<true>;
+    kegiatan: KegiatanSelect<false> | KegiatanSelect<true>;
+    galeri: GaleriSelect<false> | GaleriSelect<true>;
+    'video-khotbah': VideoKhotbahSelect<false> | VideoKhotbahSelect<true>;
+    faq: FaqSelect<false> | FaqSelect<true>;
+    'kontak-pesan': KontakPesanSelect<false> | KontakPesanSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +103,14 @@ export interface Config {
     defaultIDType: string;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSettings;
+    'tentang-gereja': TentangGereja;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'tentang-gereja': TentangGerejaSelect<false> | TentangGerejaSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -163,6 +185,127 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jadwal-ibadah".
+ */
+export interface JadwalIbadah {
+  id: string;
+  nama: string;
+  jadwalHari?:
+    | {
+        hari: 'Minggu' | 'Senin' | 'Selasa' | 'Rabu' | 'Kamis' | 'Jumat' | 'Sabtu';
+        waktu: string;
+        id?: string | null;
+      }[]
+    | null;
+  lokasi?: string | null;
+  urutan?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-slide".
+ */
+export interface HeroSlide {
+  id: string;
+  gambar?: string | Media | null;
+  urlEksternal?: string | null;
+  alt: string;
+  urutan?: number | null;
+  aktif?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pengurus".
+ */
+export interface Pengurus {
+  id: string;
+  nama: string;
+  jabatan: string;
+  kategori: 'Pelayan Firman' | 'Majelis Jemaat' | 'Karyawan Gereja';
+  foto?: string | Media | null;
+  urlFoto?: string | null;
+  urutan?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "kegiatan".
+ */
+export interface Kegiatan {
+  id: string;
+  judul: string;
+  slug: string;
+  kategori: 'Ibadah' | 'Persekutuan' | 'Pelayanan Sosial' | 'Pendidikan';
+  tanggal: string;
+  lokasi: string;
+  deskripsi: string;
+  deskripsiLengkap: string;
+  foto?: string | Media | null;
+  urlFoto?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galeri".
+ */
+export interface Galeri {
+  id: string;
+  foto?: string | Media | null;
+  urlFoto?: string | null;
+  keterangan: string;
+  kategori: 'Ibadah' | 'Kegiatan' | 'Persekutuan' | 'Bangunan';
+  urutan?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "video-khotbah".
+ */
+export interface VideoKhotbah {
+  id: string;
+  judul: string;
+  pembicara: string;
+  tanggal: string;
+  youtubeId: string;
+  deskripsi?: string | null;
+  status: 'draft' | 'published';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq".
+ */
+export interface Faq {
+  id: string;
+  pertanyaan: string;
+  jawaban: string;
+  kategori: 'umum' | 'ibadah' | 'pelayanan';
+  urutan?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "kontak-pesan".
+ */
+export interface KontakPesan {
+  id: string;
+  nama: string;
+  nomorWA: string;
+  pesan: string;
+  dibaca?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -192,6 +335,38 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'jadwal-ibadah';
+        value: string | JadwalIbadah;
+      } | null)
+    | ({
+        relationTo: 'hero-slide';
+        value: string | HeroSlide;
+      } | null)
+    | ({
+        relationTo: 'pengurus';
+        value: string | Pengurus;
+      } | null)
+    | ({
+        relationTo: 'kegiatan';
+        value: string | Kegiatan;
+      } | null)
+    | ({
+        relationTo: 'galeri';
+        value: string | Galeri;
+      } | null)
+    | ({
+        relationTo: 'video-khotbah';
+        value: string | VideoKhotbah;
+      } | null)
+    | ({
+        relationTo: 'faq';
+        value: string | Faq;
+      } | null)
+    | ({
+        relationTo: 'kontak-pesan';
+        value: string | KontakPesan;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -237,6 +412,52 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSettings {
+  id: string;
+  namaGereja: string;
+  tagline: string;
+  alamat: string;
+  telepon?: string | null;
+  email?: string | null;
+  instagram?: string | null;
+  youtube?: string | null;
+  googleMapsEmbedUrl?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tentang-gereja".
+ */
+export interface TentangGereja {
+  id: string;
+  deskripsi: string;
+  tahunBerdiri?: number | null;
+  jumlahJemaat?: string | null;
+  denominasi?: string | null;
+  foto?: string | Media | null;
+  visi: string;
+  misi?:
+    | {
+        poin: string;
+        id?: string | null;
+      }[]
+    | null;
+  sejarah?:
+    | {
+        tahun: number;
+        judul: string;
+        deskripsi: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -274,6 +495,105 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+export interface JadwalIbadahSelect<T extends boolean = true> {
+  nama?: T;
+  jadwalHari?: T | { hari?: T; waktu?: T; id?: T };
+  lokasi?: T;
+  urutan?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+export interface HeroSlideSelect<T extends boolean = true> {
+  gambar?: T;
+  urlEksternal?: T;
+  alt?: T;
+  urutan?: T;
+  aktif?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+export interface PengurusSelect<T extends boolean = true> {
+  nama?: T;
+  jabatan?: T;
+  kategori?: T;
+  foto?: T;
+  urlFoto?: T;
+  urutan?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+export interface KegiatanSelect<T extends boolean = true> {
+  judul?: T;
+  slug?: T;
+  kategori?: T;
+  tanggal?: T;
+  lokasi?: T;
+  deskripsi?: T;
+  deskripsiLengkap?: T;
+  foto?: T;
+  urlFoto?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+export interface GaleriSelect<T extends boolean = true> {
+  foto?: T;
+  urlFoto?: T;
+  keterangan?: T;
+  kategori?: T;
+  urutan?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+export interface VideoKhotbahSelect<T extends boolean = true> {
+  judul?: T;
+  pembicara?: T;
+  tanggal?: T;
+  youtubeId?: T;
+  deskripsi?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+export interface FaqSelect<T extends boolean = true> {
+  pertanyaan?: T;
+  jawaban?: T;
+  kategori?: T;
+  urutan?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+export interface KontakPesanSelect<T extends boolean = true> {
+  nama?: T;
+  nomorWA?: T;
+  pesan?: T;
+  dibaca?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+export interface SiteSettingsSelect<T extends boolean = true> {
+  namaGereja?: T;
+  tagline?: T;
+  alamat?: T;
+  telepon?: T;
+  email?: T;
+  instagram?: T;
+  youtube?: T;
+  googleMapsEmbedUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+export interface TentangGerejaSelect<T extends boolean = true> {
+  deskripsi?: T;
+  tahunBerdiri?: T;
+  jumlahJemaat?: T;
+  denominasi?: T;
+  foto?: T;
+  visi?: T;
+  misi?: T | { poin?: T; id?: T };
+  sejarah?: T | { tahun?: T; judul?: T; deskripsi?: T; id?: T };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

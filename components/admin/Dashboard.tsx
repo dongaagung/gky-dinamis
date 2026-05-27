@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@payload-config'
@@ -210,7 +211,7 @@ export async function Dashboard() {
           >
             Pesan Terbaru
           </h3>
-          <a
+          <Link
             href="/admin/collections/kontak-pesan"
             style={{
               fontSize: "0.8125rem",
@@ -223,7 +224,7 @@ export async function Dashboard() {
             }}
           >
             Lihat semua →
-          </a>
+          </Link>
         </div>
 
         {pesanTerbaru.length === 0 ? (
