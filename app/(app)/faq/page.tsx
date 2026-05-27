@@ -18,6 +18,8 @@ export default async function FaqPage() {
     limit: 200,
   });
 
+  
+
   return (
     <main className="min-h-screen">
       <section className="relative bg-[#002F5F] py-14 overflow-hidden">
