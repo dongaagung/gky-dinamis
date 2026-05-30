@@ -4,17 +4,30 @@ import config from "@/payload.config";
 import KegiatanCard from "@/app/components/kegiatan/KegiatanCard";
 import SectionTitle from "@/app/components/ui/SectionTitle";
 import PageHero from "@/app/components/ui/PageHero";
+import Pagination from "@/app/components/ui/Pagination";
 
 export const metadata: Metadata = {
   title: "Kegiatan — GKY Balikpapan",
   description: "Daftar kegiatan dan program pelayanan GKY Balikpapan",
 };
 
-export default async function KegiatanPage() {
+const LIMIT = 9;
+
+export default async function KegiatanPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { page: pageParam } = await searchParams;
+  const parsed = parseInt(pageParam ?? "1", 10);
+  const currentPage = Number.isNaN(parsed) || parsed < 1 ? 1 : parsed;
+
   const payload = await getPayload({ config });
-  const { docs, totalDocs } = await payload.find({
+  const { docs, totalDocs, totalPages } = await payload.find({
     collection: "kegiatan",
-    limit: 100,
+    sort: "-tanggal",
+    limit: LIMIT,
+    page: currentPage,
   });
 
   return (
@@ -36,6 +49,12 @@ export default async function KegiatanPage() {
               <KegiatanCard key={item.id} kegiatan={item} />
             ))}
           </div>
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            basePath="/kegiatan"
+          />
         </div>
       </section>
     </>

@@ -1,28 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import GaleriFilter from "@/app/components/galeri/GaleriFilter";
 import GaleriGrid from "@/app/components/galeri/GaleriGrid";
+import Pagination from "@/app/components/ui/Pagination";
 import type { GaleriItem } from "@/app/components/galeri/GaleriGrid";
-
-const KATEGORI_ORDER = ["Ibadah", "Kegiatan", "Persekutuan", "Bangunan"];
 
 interface GaleriClientProps {
   items: GaleriItem[];
+  kategoriList: string[];
+  hitungPerKategori: Record<string, number>;
+  currentKategori: string;
+  currentPage: number;
+  totalPages: number;
 }
 
-export default function GaleriClient({ items }: GaleriClientProps) {
-  const [aktif, setAktif] = useState<string>("Semua");
+export default function GaleriClient({
+  items,
+  kategoriList,
+  hitungPerKategori,
+  currentKategori,
+  currentPage,
+  totalPages,
+}: GaleriClientProps) {
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const kategoriList = KATEGORI_ORDER.filter((k) =>
-    items.some((item) => item.kategori === k)
-  );
+  const aktif = currentKategori || "Semua";
+  const totalFoto = Object.values(hitungPerKategori).reduce((a, b) => a + b, 0);
+  const fotoCount = currentKategori ? (hitungPerKategori[currentKategori] ?? 0) : totalFoto;
+  const extraParams = currentKategori ? { kategori: currentKategori } : undefined;
 
-  const hitungPerKategori = Object.fromEntries(
-    kategoriList.map((k) => [k, items.filter((g) => g.kategori === k).length])
-  );
-
-  const filtered = aktif === "Semua" ? items : items.filter((g) => g.kategori === aktif);
+  function handleFilterChange(k: string) {
+    const params = new URLSearchParams();
+    if (k !== "Semua") params.set("kategori", k);
+    // Reset to page 1 when filter changes
+    const qs = params.toString();
+    router.push(qs ? `${pathname}?${qs}` : pathname);
+  }
 
   return (
     <section className="py-20 bg-[#f7f7f8]">
@@ -31,17 +46,24 @@ export default function GaleriClient({ items }: GaleriClientProps) {
           <GaleriFilter
             kategori={kategoriList}
             aktif={aktif}
-            onChange={setAktif}
+            onChange={handleFilterChange}
             hitungPerKategori={hitungPerKategori}
           />
         </div>
 
         <p className="text-xs text-gray-400 text-center mb-8">
-          Menampilkan {filtered.length} foto
-          {aktif !== "Semua" ? ` dalam kategori "${aktif}"` : ""}
+          {fotoCount} foto{aktif !== "Semua" ? ` dalam kategori "${aktif}"` : ""}
+          {totalPages > 1 ? ` · halaman ${currentPage} dari ${totalPages}` : ""}
         </p>
 
-        <GaleriGrid items={filtered} />
+        <GaleriGrid items={items} />
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          basePath="/galeri"
+          extraParams={extraParams}
+        />
       </div>
     </section>
   );

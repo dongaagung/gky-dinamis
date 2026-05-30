@@ -53,6 +53,8 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || "",
       ssl: { rejectUnauthorized: false },
       max: 3,
+      idleTimeoutMillis: 10000,
+      connectionTimeoutMillis: 5000,
     },
   }),
   sharp,
