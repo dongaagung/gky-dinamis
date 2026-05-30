@@ -29,6 +29,11 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     components: {
+      providers: ['@/components/admin/StyleProvider#StyleProvider'],
+      beforeLogin: ['@/components/admin/BeforeLogin#BeforeLogin'],
+      graphics: {
+        Logo: '@/components/admin/AdminLogo#AdminLogo',
+      },
       views: {
         dashboard: {
           Component: '@/components/admin/Dashboard#Dashboard',

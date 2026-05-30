@@ -29,7 +29,8 @@
       "WebFetch(domain:www.americanhousing.com)",
       "Bash(mkdir -p \"/Users/agungdonga/FILE NEGARA/💻 Project Pribadi/gky-profile/components/admin\")",
       "Bash(npm search *)",
-      "Bash(npm info *)"
+      "Bash(npm info *)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({k:v for k,v in d.get\\('exports',{}\\).items\\(\\) if 'css' in k.lower\\(\\)}, indent=2\\)\\)\")"
     ],
     "additionalDirectories": [
       "/Users/agungdonga/FILE NEGARA/💻 Project Pribadi/gky-profile/components"
