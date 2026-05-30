@@ -4,7 +4,7 @@ export type PengurusItem = {
   id: string
   nama: string
   jabatan: string
-  foto?: { url?: string | null } | string | null
+  foto?: { url?: string | null; sizes?: { thumbnail?: { url?: string | null } | null } | null } | string | null
   urlFoto?: string | null
 }
 
@@ -18,7 +18,7 @@ export default function PengurusCard({ pengurus, featured = false }: PengurusCar
 
   const fotoUrl =
     pengurus.foto && typeof pengurus.foto === "object"
-      ? (pengurus.foto.url ?? null)
+      ? (pengurus.foto.sizes?.thumbnail?.url ?? pengurus.foto.url ?? null)
       : pengurus.urlFoto ?? null
 
   return (

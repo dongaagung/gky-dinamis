@@ -3,22 +3,31 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 
+type FotoSizes = {
+  thumbnail?: { url?: string | null } | null
+  medium?: { url?: string | null } | null
+}
+
 export type GaleriItem = {
   id: string
   keterangan: string
   kategori: string
-  foto?: { url?: string | null } | string | null
+  foto?: { url?: string | null; sizes?: FotoSizes | null } | string | null
   urlFoto?: string | null
 }
 
-function resolveFotoUrl(item: GaleriItem): string | null {
-  if (item.foto && typeof item.foto === "object") return item.foto.url ?? null;
+function resolveFotoUrl(item: GaleriItem, size: "thumbnail" | "medium" | "full" = "full"): string | null {
+  if (item.foto && typeof item.foto === "object") {
+    if (size === "thumbnail") return item.foto.sizes?.thumbnail?.url ?? item.foto.url ?? null;
+    if (size === "medium") return item.foto.sizes?.medium?.url ?? item.foto.url ?? null;
+    return item.foto.url ?? null;
+  }
   return item.urlFoto ?? null;
 }
 
 function GaleriCard({ item, onClick }: { item: GaleriItem; onClick: () => void }) {
   const [loaded, setLoaded] = useState(false);
-  const fotoUrl = resolveFotoUrl(item);
+  const fotoUrl = resolveFotoUrl(item, "thumbnail");
 
   return (
     <button
@@ -113,7 +122,7 @@ export default function GaleriGrid({ items }: { items: GaleriItem[] }) {
     );
   }
 
-  const selectedFotoUrl = selected ? resolveFotoUrl(selected) : null;
+  const selectedFotoUrl = selected ? resolveFotoUrl(selected, "medium") : null;
 
   return (
     <>

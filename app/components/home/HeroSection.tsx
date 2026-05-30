@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion } from "framer-motion"
 import { GooeyFilter } from "@/components/ui/gooey-filter"
 import { PixelTrail } from "@/components/ui/pixel-trail"
 import { useScreenSize } from "@/hooks/use-screen-size"
@@ -26,15 +26,39 @@ export default function HeroSection({
   const [paused, setPaused] = useState(false)
   const [resetKey, setResetKey] = useState(0)
   const sectionRef = useRef<HTMLElement>(null)
+  const parallaxRef = useRef<HTMLDivElement>(null)
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  })
-  const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"])
+  // Passive scroll listener + RAF — most performant parallax method.
+  // Bypasses Framer Motion entirely; direct DOM style update per frame.
+  useEffect(() => {
+    const section = sectionRef.current
+    const wrapper = parallaxRef.current
+    if (!section || !wrapper) return
 
-  // Single, clean auto-advance interval.
-  // Re-creates (resets countdown) whenever paused, slides, or resetKey changes.
+    let rafId = 0
+
+    const update = () => {
+      const { top, height } = section.getBoundingClientRect()
+      // 0 when section top hits viewport top → 1 when section fully exits
+      const progress = Math.max(0, Math.min(1, -top / height))
+      // scale(1.3) = 15% extra each side; translateY(0→12%) stays within that budget
+      wrapper.style.transform = `translateY(${progress * 12}%) scale(1.3)`
+      rafId = 0
+    }
+
+    const onScroll = () => {
+      if (!rafId) rafId = requestAnimationFrame(update)
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true })
+    update()
+
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
+  }, [])
+
   useEffect(() => {
     if (slides.length <= 1 || paused) return
     const id = setInterval(() => {
@@ -43,7 +67,6 @@ export default function HeroSection({
     return () => clearInterval(id)
   }, [paused, slides.length, resetKey])
 
-  // Restart timer when user returns to this tab (browser throttles intervals on hidden tabs)
   useEffect(() => {
     const onVisible = () => {
       if (!document.hidden) setResetKey((k) => k + 1)
@@ -52,13 +75,11 @@ export default function HeroSection({
     return () => document.removeEventListener("visibilitychange", onVisible)
   }, [])
 
-  // goTo resets the countdown so the new slide gets the full interval
   const goTo = useCallback((index: number) => {
     setCurrent(index)
     setResetKey((k) => k + 1)
   }, [])
 
-  // Use functional updater so prev/next never rely on stale closure
   const prev = useCallback(() => {
     setCurrent((c) => (c - 1 + slides.length) % slides.length)
     setResetKey((k) => k + 1)
@@ -76,25 +97,33 @@ export default function HeroSection({
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Slideshow images */}
-      {slides.map((slide, i) => (
-        <motion.div
-          key={i}
-          className="absolute inset-0"
-          style={{ y: parallaxY, scale: 1.12 }}
-          initial={{ opacity: i === 0 ? 0.6 : 0 }}
-          animate={{ opacity: i === current ? 0.6 : 0 }}
-          transition={{ duration: 1.6, ease: "easeInOut" }}
-        >
-          <Image
-            src={slide.src}
-            alt={slide.alt}
-            fill
-            className="object-cover"
-            priority={i === 0}
-          />
-        </motion.div>
-      ))}
+      {/* Parallax wrapper — plain div, transform driven by scroll RAF */}
+      <div
+        ref={parallaxRef}
+        className="absolute inset-0"
+        style={{ willChange: "transform", transform: "translateY(0%) scale(1.3)" }}
+      >
+        {slides.map((slide, i) => (
+          <motion.div
+            key={i}
+            className="absolute inset-0"
+            initial={{ opacity: i === 0 ? 0.6 : 0 }}
+            animate={{ opacity: i === current ? 0.6 : 0 }}
+            transition={{ duration: 1.6, ease: "easeInOut" }}
+          >
+            <Image
+              src={slide.src}
+              alt={slide.alt}
+              fill
+              sizes="100vw"
+              quality={90}
+              className="object-cover"
+              priority={i === 0}
+              loading={i === 0 ? "eager" : "lazy"}
+            />
+          </motion.div>
+        ))}
+      </div>
 
       {/* Gradient overlays */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/10 z-10" />
@@ -148,7 +177,7 @@ export default function HeroSection({
         </div>
       )}
 
-      {/* Main content — editorial bottom-left */}
+      {/* Main content */}
       <div className="relative z-30 w-full max-w-7xl mx-auto px-6 md:px-12 pb-20 md:pb-28">
         <motion.div
           initial={{ opacity: 0, y: 32 }}

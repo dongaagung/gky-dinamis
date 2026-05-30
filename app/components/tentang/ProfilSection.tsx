@@ -5,12 +5,14 @@ type ProfilProps = {
   tahunBerdiri?: number | null
   jumlahJemaat?: string | null
   denominasi?: string | null
-  foto?: { url?: string | null } | string | null
+  foto?: { url?: string | null; sizes?: { medium?: { url?: string | null } | null } | null } | string | null
 }
 
 export default function ProfilSection({ profil }: { profil: ProfilProps }) {
   const fotoUrl =
-    profil.foto && typeof profil.foto === "object" ? profil.foto.url : null
+    profil.foto && typeof profil.foto === "object"
+      ? (profil.foto.sizes?.medium?.url ?? profil.foto.url ?? null)
+      : null
 
   const stats = [
     {
