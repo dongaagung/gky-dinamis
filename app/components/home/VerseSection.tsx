@@ -3,7 +3,12 @@
 import { useRef } from "react"
 import { motion, useInView } from "framer-motion"
 
-export default function VerseSection() {
+interface Props {
+  ayat: string
+  referensi: string
+}
+
+export default function VerseSection({ ayat, referensi }: Props) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.4 })
 
@@ -25,17 +30,15 @@ export default function VerseSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
-          className="text-xl md:text-2xl lg:text-3xl font-light text-gray-700 leading-loose tracking-tight -mt-2 
+          className="text-xl md:text-2xl lg:text-3xl font-light text-gray-700 leading-loose tracking-tight -mt-2
              transform transition-all duration-500 ease-out
-             hover:scale-110 hover:text-gray-900 
+             hover:scale-110 hover:text-gray-900
              hover:shadow-2xl hover:shadow-black/20
              hover:-translate-y-1
              hover:bg-white/10 backdrop-blur-sm
              p-4 rounded-xl"
         >
-          Karena begitu besar kasih Allah akan dunia ini, sehingga Ia telah
-          mengaruniakan Anak-Nya yang tunggal, supaya setiap orang yang percaya
-          kepada-Nya tidak binasa, melainkan beroleh hidup yang kekal.
+          {ayat}
         </motion.blockquote>
 
         <motion.div
@@ -46,7 +49,7 @@ export default function VerseSection() {
         >
           <div className="w-14 h-px bg-white" />
           <cite className="text-white text-xs font-bold tracking-[0.3em] not-italic">
-            YOHANES 3:16
+            {referensi.toUpperCase()}
           </cite>
           <div className="w-14 h-px bg-white" />
         </motion.div>

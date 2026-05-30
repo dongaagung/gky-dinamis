@@ -36,7 +36,10 @@ export default async function HomePage() {
       />
       <HighlightStrip />
       <JadwalIbadahSection jadwal={jadwal} />
-      <VerseSection />
+      <VerseSection
+        ayat={siteSettings.ayatAlkitab ?? "Karena begitu besar kasih Allah akan dunia ini, sehingga Ia telah mengaruniakan Anak-Nya yang tunggal, supaya setiap orang yang percaya kepada-Nya tidak binasa, melainkan beroleh hidup yang kekal."}
+        referensi={siteSettings.referensiAyat ?? "Yohanes 3:16"}
+      />
       <MenuRingkasanSection />
     </>
   );

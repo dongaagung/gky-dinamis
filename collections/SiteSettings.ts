@@ -50,5 +50,19 @@ export const SiteSettings: GlobalConfig = {
         description: 'URL embed Google Maps (https://www.google.com/maps/embed?...)',
       },
     },
+    {
+      name: 'ayatAlkitab',
+      type: 'textarea',
+      admin: {
+        description: 'Teks ayat Alkitab yang ditampilkan di halaman utama',
+      },
+    },
+    {
+      name: 'referensiAyat',
+      type: 'text',
+      admin: {
+        description: 'Referensi ayat, contoh: Yohanes 3:16',
+      },
+    },
   ],
 }
