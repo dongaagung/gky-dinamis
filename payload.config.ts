@@ -47,8 +47,6 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || "",
       ssl: { rejectUnauthorized: false },
-      // Force IPv4 to avoid ENETUNREACH on Vercel build servers
-      family: 4,
     },
   }),
   sharp,

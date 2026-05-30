@@ -424,6 +424,8 @@ export interface SiteSettings {
   instagram?: string | null;
   youtube?: string | null;
   googleMapsEmbedUrl?: string | null;
+  ayatAlkitab?: string | null;
+  referensiAyat?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
