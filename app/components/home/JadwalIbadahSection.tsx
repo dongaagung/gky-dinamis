@@ -123,7 +123,7 @@ export default function JadwalIbadahSection({ jadwal }: { jadwal: JadwalItem[] }
     <section
       id="jadwal-ibadah"
       className="py-20 md:py-28"
-      style={{ background: "linear-gradient(145deg, #f0f6ff 0%, #f8faff 40%, #fff0f0 100%)" }}
+      style={{ background: "linear-gradient(145deg, rgba(240,246,255,0.82) 0%, rgba(248,250,255,0.88) 40%, rgba(255,240,240,0.82) 100%)" }}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <motion.div
