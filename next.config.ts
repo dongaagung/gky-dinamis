@@ -3,6 +3,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    // Cache hasil optimasi next/image selama 30 hari di CDN Vercel.
+    // Berlaku untuk gambar eksternal (YouTube, Unsplash) yang masih pakai optimizer.
+    // Gambar dari Vercel Blob pakai unoptimized=true sehingga setting ini tidak berpengaruh pada mereka.
+    minimumCacheTTL: 2592000,
     remotePatterns: [
       {
         protocol: "https",

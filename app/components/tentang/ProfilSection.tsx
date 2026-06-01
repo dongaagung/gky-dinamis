@@ -55,6 +55,7 @@ export default function ProfilSection({ profil }: { profil: ProfilProps }) {
                 alt="Gedung GKY Balikpapan"
                 width={720}
                 height={480}
+                unoptimized
                 className="w-full h-auto object-cover"
                 priority
               />

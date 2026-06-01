@@ -113,8 +113,7 @@ export default function HeroSection({
               src={slide.src}
               alt={slide.alt}
               fill
-              sizes="100vw"
-              quality={90}
+              unoptimized
               className="object-cover"
               priority={i === 0}
               loading={i === 0 ? "eager" : "lazy"}

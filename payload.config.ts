@@ -62,7 +62,11 @@ export default buildConfig({
     vercelBlobStorage({
       enabled: true,
       collections: {
-        media: true,
+        media: {
+          // Makes foto.url return the direct Blob CDN URL instead of proxying
+          // through /api/media/file/[filename]. Required for fast image loading.
+          disablePayloadAccessControl: true,
+        },
       },
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
     }),

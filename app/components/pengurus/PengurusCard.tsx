@@ -32,8 +32,8 @@ export default function PengurusCard({ pengurus, featured = false }: PengurusCar
             src={fotoUrl}
             alt={`Foto ${pengurus.nama}`}
             fill
+            unoptimized
             className="object-cover"
-            sizes="(max-width: 640px) 88px, 112px"
           />
         ) : (
           <div className="w-full h-full bg-primary/10 flex items-center justify-center">

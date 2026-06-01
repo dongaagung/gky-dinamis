@@ -11,7 +11,7 @@ export type KegiatanItem = {
   tanggal: string
   lokasi: string
   deskripsi: string
-  foto?: { url?: string | null } | string | null
+  foto?: { url?: string | null; sizes?: { thumbnail?: { url?: string | null } | null } | null } | string | null
   urlFoto?: string | null
 }
 
@@ -29,7 +29,7 @@ export default function KegiatanCard({ kegiatan }: { kegiatan: KegiatanItem }) {
 
   const fotoUrl =
     kegiatan.foto && typeof kegiatan.foto === "object"
-      ? (kegiatan.foto.url ?? null)
+      ? (kegiatan.foto.sizes?.thumbnail?.url ?? kegiatan.foto.url ?? null)
       : kegiatan.urlFoto ?? null
 
   return (
@@ -40,8 +40,8 @@ export default function KegiatanCard({ kegiatan }: { kegiatan: KegiatanItem }) {
             src={fotoUrl}
             alt={kegiatan.judul}
             fill
+            unoptimized
             className="object-cover"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">

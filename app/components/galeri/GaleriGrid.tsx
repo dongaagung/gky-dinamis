@@ -45,8 +45,8 @@ function GaleriCard({ item, onClick }: { item: GaleriItem; onClick: () => void }
               src={fotoUrl}
               alt={item.keterangan}
               fill
+              unoptimized
               loading="lazy"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className={`object-cover transition-all duration-500 group-hover:scale-[1.04] ${
                 loaded ? "opacity-100" : "opacity-0"
               }`}
@@ -160,8 +160,8 @@ export default function GaleriGrid({ items }: { items: GaleriItem[] }) {
                   src={selectedFotoUrl}
                   alt={selected.keterangan}
                   fill
+                  unoptimized
                   className="object-contain"
-                  sizes="(max-width: 768px) 100vw, 768px"
                   priority
                 />
               )}
