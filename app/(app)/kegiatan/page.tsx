@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import { getPayload } from "payload";
 import config from "@/payload.config";
 import KegiatanCard from "@/app/components/kegiatan/KegiatanCard";
@@ -13,6 +14,20 @@ export const metadata: Metadata = {
 
 const LIMIT = 9;
 
+const fetchKegiatan = unstable_cache(
+  async (page: number) => {
+    const payload = await getPayload({ config });
+    return payload.find({
+      collection: "kegiatan",
+      sort: "-tanggal",
+      limit: LIMIT,
+      page,
+    });
+  },
+  ["kegiatan-list"],
+  { revalidate: 300 } // cache 5 menit
+);
+
 export default async function KegiatanPage({
   searchParams,
 }: {
@@ -22,13 +37,7 @@ export default async function KegiatanPage({
   const parsed = parseInt(pageParam ?? "1", 10);
   const currentPage = Number.isNaN(parsed) || parsed < 1 ? 1 : parsed;
 
-  const payload = await getPayload({ config });
-  const { docs, totalDocs, totalPages } = await payload.find({
-    collection: "kegiatan",
-    sort: "-tanggal",
-    limit: LIMIT,
-    page: currentPage,
-  });
+  const { docs, totalDocs, totalPages } = await fetchKegiatan(currentPage);
 
   return (
     <>

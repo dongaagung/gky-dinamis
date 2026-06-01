@@ -4,6 +4,8 @@ import config from "@/payload.config";
 import VideoClient from "@/app/components/video/VideoClient";
 import PageHero from "@/app/components/ui/PageHero";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Video Khotbah — GKY Balikpapan",
   description: "Koleksi video khotbah dan rekaman ibadah GKY Balikpapan",

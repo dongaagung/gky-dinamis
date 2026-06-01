@@ -52,9 +52,9 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || "",
       ssl: { rejectUnauthorized: false },
-      max: 3,
-      idleTimeoutMillis: 10000,
-      connectionTimeoutMillis: 5000,
+      max: 2,                    // minimal connection untuk Hobby tier
+      idleTimeoutMillis: 60000,  // 1 menit — jaga koneksi tetap hidup antar warm request
+      connectionTimeoutMillis: 8000,
     },
   }),
   sharp,

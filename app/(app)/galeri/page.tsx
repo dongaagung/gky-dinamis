@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import { getPayload } from "payload";
 import config from "@/payload.config";
 import GaleriClient from "@/app/components/galeri/GaleriClient";
@@ -12,6 +13,34 @@ export const metadata: Metadata = {
 const LIMIT = 12;
 const KATEGORI_ORDER = ["Ibadah", "Kegiatan", "Persekutuan", "Bangunan"];
 
+const fetchGaleri = unstable_cache(
+  async (page: number, kategori: string) => {
+    const payload = await getPayload({ config });
+
+    const countResults = await Promise.all(
+      KATEGORI_ORDER.map((k) =>
+        payload
+          .find({ collection: "galeri", where: { kategori: { equals: k } }, limit: 0 })
+          .then((r) => [k, r.totalDocs] as [string, number])
+      )
+    );
+    const hitungPerKategori = Object.fromEntries(countResults);
+    const kategoriList = KATEGORI_ORDER.filter((k) => hitungPerKategori[k] > 0);
+
+    const { docs, totalPages } = await payload.find({
+      collection: "galeri",
+      sort: "urutan",
+      limit: LIMIT,
+      page,
+      ...(kategori ? { where: { kategori: { equals: kategori } } } : {}),
+    });
+
+    return { docs, totalPages, hitungPerKategori, kategoriList };
+  },
+  ["galeri-list"],
+  { revalidate: 300 } // cache 5 menit
+);
+
 export default async function GaleriPage({
   searchParams,
 }: {
@@ -23,27 +52,8 @@ export default async function GaleriPage({
   const currentPage = Number.isNaN(parsed) || parsed < 1 ? 1 : parsed;
   const currentKategori = KATEGORI_ORDER.includes(kategoriParam ?? "") ? (kategoriParam ?? "") : "";
 
-  const payload = await getPayload({ config });
-
-  // Fetch counts per category (no limit, just totalDocs)
-  const countResults = await Promise.all(
-    KATEGORI_ORDER.map((k) =>
-      payload
-        .find({ collection: "galeri", where: { kategori: { equals: k } }, limit: 0 })
-        .then((r) => [k, r.totalDocs] as [string, number])
-    )
-  );
-  const hitungPerKategori = Object.fromEntries(countResults);
-  const kategoriList = KATEGORI_ORDER.filter((k) => hitungPerKategori[k] > 0);
-
-  // Fetch paginated items, optionally filtered by category
-  const { docs, totalPages } = await payload.find({
-    collection: "galeri",
-    sort: "urutan",
-    limit: LIMIT,
-    page: currentPage,
-    ...(currentKategori ? { where: { kategori: { equals: currentKategori } } } : {}),
-  });
+  const { docs, totalPages, hitungPerKategori, kategoriList } =
+    await fetchGaleri(currentPage, currentKategori);
 
   return (
     <>

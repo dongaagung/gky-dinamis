@@ -4,6 +4,8 @@ import config from "@/payload.config";
 import PengurusCard, { type PengurusItem } from "@/app/components/pengurus/PengurusCard";
 import PageHero from "@/app/components/ui/PageHero";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Pengurus — GKY Balikpapan",
   description: "Struktur pengurus dan pelayan jemaat GKY Balikpapan",
