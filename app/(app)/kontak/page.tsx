@@ -23,20 +23,19 @@ export default async function KontakPage() {
       />
 
       <section className="py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            <div className="space-y-6">
-              <InfoKontak siteSettings={siteSettings} />
-              <PetaLokasi
-                alamat={siteSettings.alamat ?? ""}
-                googleMapsEmbedUrl={siteSettings.googleMapsEmbedUrl}
-              />
-            </div>
-
-            <div className="lg:sticky lg:top-24">
+        <div className="max-w-6xl mx-auto px-4 space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="h-full">
               <FormKontak />
             </div>
+
+            <PetaLokasi
+              alamat={siteSettings.alamat ?? ""}
+              googleMapsEmbedUrl={siteSettings.googleMapsEmbedUrl}
+            />
           </div>
+
+          <InfoKontak siteSettings={siteSettings} />
         </div>
       </section>
     </>

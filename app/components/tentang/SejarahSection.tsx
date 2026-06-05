@@ -9,7 +9,7 @@ type SejarahItem = {
 
 export default function SejarahSection({ sejarah }: { sejarah: SejarahItem[] }) {
   return (
-    <section className="py-20 bg-white">
+    <section id="sejarah" className="py-20 bg-white">
       <div className="max-w-4xl mx-auto px-4">
         <SectionTitle
           title="Sejarah Gereja"

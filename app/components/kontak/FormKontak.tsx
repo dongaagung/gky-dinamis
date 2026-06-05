@@ -35,7 +35,7 @@ export default function FormKontak() {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8 h-full">
       <h2 className="text-xl font-bold text-primary mb-2">Kirim Pesan</h2>
       <p className="text-gray-500 text-sm mb-6">
         Ada pertanyaan atau ingin menghubungi kami? Isi formulir di bawah ini.

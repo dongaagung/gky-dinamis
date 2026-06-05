@@ -15,7 +15,8 @@ export async function GET() {
     slug: "site-settings",
     data: {
       namaGereja: "GKY Balikpapan",
-      tagline: "Bertumbuh dalam Iman, Melayani dalam Kasih",
+      motto: "Bertumbuh dalam Iman, Melayani dalam Kasih",
+      tagline: "Gereja Kristen Yesus Balikpapan",
       alamat:
         "Jl. Mayjend Sutoyo No. 1A RT. 44 Gn. Malang Balikpapan - Kalimantan Timur",
       telepon: "0821 5746 7134",

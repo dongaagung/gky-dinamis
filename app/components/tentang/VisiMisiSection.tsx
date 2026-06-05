@@ -12,7 +12,7 @@ type VisiMisiProps = {
 
 export default function VisiMisiSection({ visi, misi }: VisiMisiProps) {
   return (
-    <section className="py-20 bg-gray-50">
+    <section id="visi-misi" className="py-20 bg-gray-50">
       <div className="max-w-6xl mx-auto px-4">
         <SectionTitle title="Visi & Misi" subtitle="Arah dan panggilan pelayanan GKY Balikpapan" />
 

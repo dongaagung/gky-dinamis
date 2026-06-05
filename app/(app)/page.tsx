@@ -31,7 +31,7 @@ export default async function HomePage() {
     <>
       <HeroSection
         namaGereja={siteSettings.namaGereja ?? ""}
-        tagline={siteSettings.tagline ?? ""}
+        motto={siteSettings.motto ?? ""}
         slides={slides}
       />
       <HighlightStrip />

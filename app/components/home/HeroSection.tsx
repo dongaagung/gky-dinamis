@@ -14,11 +14,11 @@ const SLIDE_INTERVAL = 5000
 
 export default function HeroSection({
   namaGereja,
-  tagline,
+  motto,
   slides,
 }: {
   namaGereja: string
-  tagline: string
+  motto: string
   slides: Slide[]
 }) {
   const screenSize = useScreenSize()
@@ -206,7 +206,7 @@ export default function HeroSection({
             <div className="w-10 h-px bg-white/25 mb-5" />
 
             <p className="text-white/65 text-base md:text-lg leading-relaxed mb-10 max-w-lg">
-              {tagline}
+              {motto}
             </p>
 
             <div className="flex flex-wrap gap-3">

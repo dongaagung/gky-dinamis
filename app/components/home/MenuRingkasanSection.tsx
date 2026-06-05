@@ -22,14 +22,14 @@ const menus = [
     deskripsi: "Ikuti berbagai agenda dan kegiatan gereja — dari ibadah khusus hingga aksi sosial.",
   },
   {
-    href: "/galeri",
-    label: "Galeri",
-    deskripsi: "Lihat koleksi foto dokumentasi berbagai momen berharga dalam kehidupan jemaat.",
+    href: "/komunitas",
+    label: "Komunitas",
+    deskripsi: "Bergabunglah dalam komunitas ibadah kami — dari anak-anak, remaja, pemuda, hingga keluarga.",
   },
   {
-    href: "/video",
-    label: "Video Khotbah",
-    deskripsi: "Tonton kembali rekaman khotbah dan ibadah dari para pendeta GKY Balikpapan.",
+    href: "/media",
+    label: "Media",
+    deskripsi: "Tonton khotbah, lihat galeri foto, dan ikuti dokumentasi kehidupan jemaat GKY Balikpapan.",
   },
   {
     href: "/faq",
@@ -47,8 +47,8 @@ const menus = [
 // Tentang: col 1-2, row 1-2 (featured)
 // Pengurus: col 3, row 1
 // Kegiatan: col 4, row 1
-// Galeri: col 3, row 2
-// Video: col 4, row 2
+// Komunitas: col 3, row 2
+// Media: col 4, row 2
 // FAQ: col 1-2, row 3
 // Kontak: col 3-4, row 3
 const bentoClass = [

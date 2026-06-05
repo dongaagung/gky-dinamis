@@ -429,6 +429,7 @@ export interface PayloadMigration {
 export interface SiteSettings {
   id: string;
   namaGereja: string;
+  motto?: string | null;
   tagline: string;
   alamat: string;
   telepon?: string | null;
@@ -436,6 +437,7 @@ export interface SiteSettings {
   instagram?: string | null;
   youtube?: string | null;
   googleMapsEmbedUrl?: string | null;
+  googleMapsUrl?: string | null;
   ayatAlkitab?: string | null;
   referensiAyat?: string | null;
   updatedAt?: string | null;

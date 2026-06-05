@@ -12,6 +12,13 @@ export const SiteSettings: GlobalConfig = {
       required: true,
     },
     {
+      name: 'motto',
+      type: 'text',
+      admin: {
+        description: 'Motto resmi gereja, contoh: Bertumbuh dalam Iman, Melayani dalam Kasih',
+      },
+    },
+    {
       name: 'tagline',
       type: 'text',
       required: true,
@@ -48,6 +55,13 @@ export const SiteSettings: GlobalConfig = {
       type: 'text',
       admin: {
         description: 'URL embed Google Maps (https://www.google.com/maps/embed?...)',
+      },
+    },
+    {
+      name: 'googleMapsUrl',
+      type: 'text',
+      admin: {
+        description: 'URL Google Maps biasa untuk hyperlink/ikon di footer (https://maps.google.com/... atau https://goo.gl/maps/...)',
       },
     },
     {

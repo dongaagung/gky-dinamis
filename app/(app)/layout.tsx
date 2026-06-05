@@ -1,3 +1,4 @@
+// @ts-expect-error -- importing globals.css via side effect
 import "./globals.css";
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
@@ -12,10 +13,16 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "GKY Balikpapan",
-  description: "Website resmi GKY Balikpapan — Bertumbuh dalam Iman, Melayani dalam Kasih",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const payload = await getPayload({ config });
+  const s = await payload.findGlobal({ slug: "site-settings" });
+  const nama = s.namaGereja ?? "GKY Balikpapan";
+  const suffix = s.motto ?? s.tagline ?? "";
+  return {
+    title: nama,
+    description: suffix ? `Website resmi ${nama} — ${suffix}` : `Website resmi ${nama}`,
+  };
+}
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const payload = await getPayload({ config });

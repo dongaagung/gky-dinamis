@@ -16,6 +16,7 @@ import { Galeri } from "./collections/Galeri";
 import { VideoKhotbah } from "./collections/VideoKhotbah";
 import { FAQ } from "./collections/FAQ";
 import { KontakPesan } from "./collections/KontakPesan";
+import { Komunitas } from "./collections/Komunitas";
 import { SiteSettings } from "./collections/SiteSettings";
 import { TentangGereja } from "./collections/TentangGereja";
 
@@ -41,7 +42,7 @@ export default buildConfig({
       },
     },
   },
-  collections: [Users, Media, JadwalIbadah, HeroSlide, Pengurus, Kegiatan, Galeri, VideoKhotbah, FAQ, KontakPesan],
+  collections: [Users, Media, JadwalIbadah, HeroSlide, Pengurus, Kegiatan, Galeri, VideoKhotbah, FAQ, KontakPesan, Komunitas],
   globals: [SiteSettings, TentangGereja],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
@@ -52,9 +53,10 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || "",
       ssl: { rejectUnauthorized: false },
-      max: 2,                    // minimal connection untuk Hobby tier
-      idleTimeoutMillis: 60000,  // 1 menit — jaga koneksi tetap hidup antar warm request
-      connectionTimeoutMillis: 8000,
+      max: 3,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 30000, // Neon cold start bisa 10–15 detik
+      allowExitOnIdle: true,
     },
   }),
   sharp,
