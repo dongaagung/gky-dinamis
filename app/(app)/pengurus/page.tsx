@@ -4,7 +4,7 @@ import config from "@/payload.config";
 import PengurusCard, { type PengurusItem } from "@/app/components/pengurus/PengurusCard";
 import PageHero from "@/app/components/ui/PageHero";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Pengurus — GKY Balikpapan",

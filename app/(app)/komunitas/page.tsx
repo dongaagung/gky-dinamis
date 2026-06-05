@@ -4,7 +4,7 @@ import { getPayload } from "payload";
 import config from "@/payload.config";
 import PageHero from "@/app/components/ui/PageHero";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Komunitas — GKY Balikpapan",

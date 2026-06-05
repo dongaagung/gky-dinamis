@@ -7,7 +7,7 @@ import config from "@/payload.config";
 import KomunitasFoto from "@/app/components/komunitas/KomunitasFoto";
 import KomunitasVideo from "@/app/components/komunitas/KomunitasVideo";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 type MediaObj = {
   url?: string | null;
@@ -75,13 +75,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { docs } = (await (payload as any).find({
-    collection: "komunitas",
-    where: { aktif: { equals: true } },
-  })) as { docs: KomunitasDoc[] };
-  return docs.map((k) => ({ slug: k.slug }));
+  try {
+    const payload = await getPayload({ config });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { docs } = (await (payload as any).find({
+      collection: "komunitas",
+      where: { aktif: { equals: true } },
+    })) as { docs: KomunitasDoc[] };
+    return docs.map((k) => ({ slug: k.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export default async function KomunitasDetailPage({ params }: Props) {

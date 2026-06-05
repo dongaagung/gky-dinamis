@@ -6,7 +6,7 @@ import VisiMisiSection from "@/app/components/tentang/VisiMisiSection";
 import SejarahSection from "@/app/components/tentang/SejarahSection";
 import PageHero from "@/app/components/ui/PageHero";
 
-export const revalidate = 3600; // ISR: regenerate setiap 1 jam di background
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Tentang Gereja — GKY Balikpapan",
