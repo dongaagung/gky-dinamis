@@ -53,9 +53,9 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || "",
       ssl: { rejectUnauthorized: false },
-      max: 3,
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 30000, // Neon cold start bisa 10–15 detik
+      max: 1,
+      idleTimeoutMillis: 10000,
+      connectionTimeoutMillis: 30000,
       allowExitOnIdle: true,
     },
   }),
