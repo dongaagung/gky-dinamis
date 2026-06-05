@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import VideoCard from "@/app/components/video/VideoCard";
 import VideoModal from "@/app/components/video/VideoModal";
+import Pagination from "@/app/components/ui/Pagination";
 
 export type VideoItem = {
   id: string;
@@ -15,9 +16,11 @@ export type VideoItem = {
 
 interface VideoClientProps {
   videos: VideoItem[];
+  currentPage: number;
+  totalPages: number;
 }
 
-export default function VideoClient({ videos }: VideoClientProps) {
+export default function VideoClient({ videos, currentPage, totalPages }: VideoClientProps) {
   const [selected, setSelected] = useState<VideoItem | null>(null);
   const handleClose = useCallback(() => setSelected(null), []);
 
@@ -29,6 +32,12 @@ export default function VideoClient({ videos }: VideoClientProps) {
             <VideoCard key={video.id} video={video} onClick={setSelected} />
           ))}
         </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          basePath="/video"
+        />
 
         <div className="mt-10 text-center">
           <a

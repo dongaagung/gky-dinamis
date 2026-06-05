@@ -41,6 +41,7 @@ export default function KegiatanCard({ kegiatan }: { kegiatan: KegiatanItem }) {
             alt={kegiatan.judul}
             fill
             unoptimized
+            loading="lazy"
             className="object-cover"
           />
         ) : (

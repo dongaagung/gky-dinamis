@@ -18,6 +18,7 @@ export default function VideoCard({ video, onClick }: VideoCardProps) {
           src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`}
           alt={video.judul}
           fill
+          loading="lazy"
           className="object-cover transition-transform duration-300 group-hover:scale-105 brightness-90 group-hover:brightness-75"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />

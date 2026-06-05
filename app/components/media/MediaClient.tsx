@@ -1,36 +1,64 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import GaleriFilter from "@/app/components/galeri/GaleriFilter";
 import GaleriGrid from "@/app/components/galeri/GaleriGrid";
+import Pagination from "@/app/components/ui/Pagination";
 import VideoCard from "@/app/components/video/VideoCard";
 import VideoModal from "@/app/components/video/VideoModal";
 import type { GaleriItem } from "@/app/components/galeri/GaleriGrid";
 import type { VideoItem } from "@/app/components/video/VideoClient";
 
 interface MediaClientProps {
-  fotoItems: GaleriItem[];
+  activeTab: "foto" | "video";
+  currentPage: number;
+  fotoItems: GaleriItem[] | null;
+  fotoTotalPages: number;
   kategoriList: string[];
   hitungPerKategori: Record<string, number>;
-  videos: VideoItem[];
-  defaultTab?: "foto" | "video";
+  currentKategori: string;
+  videos: VideoItem[] | null;
+  videoTotalPages: number;
+  galeriTotal: number;
+  videoTotal: number;
 }
 
 export default function MediaClient({
+  activeTab,
+  currentPage,
   fotoItems,
+  fotoTotalPages,
   kategoriList,
   hitungPerKategori,
+  currentKategori,
   videos,
-  defaultTab = "foto",
+  videoTotalPages,
+  galeriTotal,
+  videoTotal,
 }: MediaClientProps) {
-  const [activeTab, setActiveTab] = useState<"foto" | "video">(defaultTab);
-  const [activeKategori, setActiveKategori] = useState("Semua");
+  const router = useRouter();
   const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
 
-  const filteredFoto =
-    activeKategori === "Semua"
-      ? fotoItems
-      : fotoItems.filter((f) => f.kategori === activeKategori);
+  const switchTab = useCallback(
+    (tab: "foto" | "video") => {
+      router.push(tab === "video" ? "/media?tab=video" : "/media");
+    },
+    [router]
+  );
+
+  const handleFilterChange = useCallback(
+    (kategori: string) => {
+      const params = new URLSearchParams({ tab: "foto" });
+      if (kategori !== "Semua") params.set("kategori", kategori);
+      router.push(`/media?${params.toString()}`);
+    },
+    [router]
+  );
+
+  const aktifKategori = currentKategori || "Semua";
+  const fotoPaginationParams: Record<string, string> = { tab: "foto" };
+  if (currentKategori) fotoPaginationParams.kategori = currentKategori;
 
   return (
     <>
@@ -39,7 +67,7 @@ export default function MediaClient({
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex gap-0">
             <button
-              onClick={() => setActiveTab("foto")}
+              onClick={() => switchTab("foto")}
               className={`flex items-center gap-2 px-6 py-4 text-sm font-bold tracking-wide border-b-2 transition-colors ${
                 activeTab === "foto"
                   ? "border-primary text-primary"
@@ -51,12 +79,12 @@ export default function MediaClient({
               </svg>
               Galeri Foto
               <span className={`text-xs px-2 py-0.5 rounded-full ${activeTab === "foto" ? "bg-primary/10 text-primary" : "bg-gray-100 text-gray-500"}`}>
-                {fotoItems.length}
+                {galeriTotal}
               </span>
             </button>
 
             <button
-              onClick={() => setActiveTab("video")}
+              onClick={() => switchTab("video")}
               className={`flex items-center gap-2 px-6 py-4 text-sm font-bold tracking-wide border-b-2 transition-colors ${
                 activeTab === "video"
                   ? "border-primary text-primary"
@@ -68,7 +96,7 @@ export default function MediaClient({
               </svg>
               Video Khotbah
               <span className={`text-xs px-2 py-0.5 rounded-full ${activeTab === "video" ? "bg-primary/10 text-primary" : "bg-gray-100 text-gray-500"}`}>
-                {videos.length}
+                {videoTotal}
               </span>
             </button>
           </div>
@@ -76,26 +104,32 @@ export default function MediaClient({
       </div>
 
       {/* Foto tab */}
-      {activeTab === "foto" && (
+      {activeTab === "foto" && fotoItems !== null && (
         <section className="py-12 bg-[#f7f7f8]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             {kategoriList.length > 0 && (
               <div className="mb-8">
                 <GaleriFilter
                   kategori={kategoriList}
-                  aktif={activeKategori}
-                  onChange={setActiveKategori}
+                  aktif={aktifKategori}
+                  onChange={handleFilterChange}
                   hitungPerKategori={hitungPerKategori}
                 />
               </div>
             )}
-            <GaleriGrid items={filteredFoto} />
+            <GaleriGrid items={fotoItems} />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={fotoTotalPages}
+              basePath="/media"
+              extraParams={fotoPaginationParams}
+            />
           </div>
         </section>
       )}
 
       {/* Video tab */}
-      {activeTab === "video" && (
+      {activeTab === "video" && videos !== null && (
         <section className="py-12 bg-gray-50">
           <div className="max-w-6xl mx-auto px-4">
             {videos.length === 0 ? (
@@ -109,6 +143,12 @@ export default function MediaClient({
                     <VideoCard key={video.id} video={video} onClick={setSelectedVideo} />
                   ))}
                 </div>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={videoTotalPages}
+                  basePath="/media"
+                  extraParams={{ tab: "video" }}
+                />
                 <div className="mt-10 text-center">
                   <a
                     href="https://youtube.com/@gkybalikpapan"

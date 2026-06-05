@@ -11,17 +11,36 @@ export const metadata: Metadata = {
 };
 
 const KATEGORI_ORDER = ["Ibadah", "Kegiatan", "Persekutuan", "Bangunan"];
+const GALERI_LIMIT = 18;
+const VIDEO_LIMIT = 12;
 
-const fetchMedia = unstable_cache(
+const fetchTabCounts = unstable_cache(
   async () => {
     const payload = await getPayload({ config });
-
-    const [galeriResult, videoResult, ...kategoriCounts] = await Promise.all([
-      payload.find({ collection: "galeri", sort: "urutan", limit: 200 }),
-      payload.find({
+    const [galeri, video] = await Promise.all([
+      payload.count({ collection: "galeri" }),
+      payload.count({
         collection: "video-khotbah",
         where: { status: { equals: "published" } },
-        sort: "-tanggal",
+      }),
+    ]);
+    return { galeriTotal: galeri.totalDocs, videoTotal: video.totalDocs };
+  },
+  ["media-tab-counts"],
+  { revalidate: 300 }
+);
+
+const fetchMediaGaleri = unstable_cache(
+  async (page: number, kategori: string) => {
+    const payload = await getPayload({ config });
+
+    const [galeriResult, ...kategoriCounts] = await Promise.all([
+      payload.find({
+        collection: "galeri",
+        sort: "urutan",
+        limit: GALERI_LIMIT,
+        page,
+        ...(kategori ? { where: { kategori: { equals: kategori } } } : {}),
       }),
       ...KATEGORI_ORDER.map((k) =>
         payload
@@ -34,25 +53,51 @@ const fetchMedia = unstable_cache(
     const kategoriList = KATEGORI_ORDER.filter((k) => hitungPerKategori[k] > 0);
 
     return {
-      fotoItems: galeriResult.docs,
-      videos: videoResult.docs,
+      docs: galeriResult.docs,
+      totalPages: galeriResult.totalPages,
       kategoriList,
       hitungPerKategori,
     };
   },
-  ["media-combined"],
+  ["media-galeri"],
+  { revalidate: 300 }
+);
+
+const fetchMediaVideo = unstable_cache(
+  async (page: number) => {
+    const payload = await getPayload({ config });
+    return payload.find({
+      collection: "video-khotbah",
+      where: { status: { equals: "published" } },
+      sort: "-tanggal",
+      limit: VIDEO_LIMIT,
+      page,
+    });
+  },
+  ["media-video"],
   { revalidate: 300 }
 );
 
 export default async function MediaPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tab?: string }>;
+  searchParams: Promise<{ tab?: string; page?: string; kategori?: string }>;
 }) {
-  const { tab } = await searchParams;
-  const defaultTab = tab === "video" ? "video" : "foto";
+  const { tab, page: pageParam, kategori: kategoriParam } = await searchParams;
+  const activeTab = tab === "video" ? "video" : "foto";
+  const currentPage = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
+  const currentKategori = KATEGORI_ORDER.includes(kategoriParam ?? "") ? (kategoriParam ?? "") : "";
 
-  const { fotoItems, videos, kategoriList, hitungPerKategori } = await fetchMedia();
+  const counts = await fetchTabCounts();
+
+  let fotoData: Awaited<ReturnType<typeof fetchMediaGaleri>> | null = null;
+  let videoData: Awaited<ReturnType<typeof fetchMediaVideo>> | null = null;
+
+  if (activeTab === "foto") {
+    fotoData = await fetchMediaGaleri(currentPage, currentKategori);
+  } else {
+    videoData = await fetchMediaVideo(currentPage);
+  }
 
   return (
     <>
@@ -61,18 +106,26 @@ export default async function MediaPage({
         subtitle="Galeri foto dan video khotbah GKY Balikpapan"
       />
       <MediaClient
-        fotoItems={fotoItems}
-        kategoriList={kategoriList}
-        hitungPerKategori={hitungPerKategori}
-        videos={videos.map((v) => ({
-          id: String(v.id),
-          judul: v.judul,
-          pembicara: v.pembicara,
-          tanggal: v.tanggal,
-          youtubeId: v.youtubeId,
-          deskripsi: v.deskripsi ?? null,
-        }))}
-        defaultTab={defaultTab as "foto" | "video"}
+        activeTab={activeTab}
+        currentPage={currentPage}
+        fotoItems={fotoData?.docs ?? null}
+        fotoTotalPages={fotoData?.totalPages ?? 1}
+        kategoriList={fotoData?.kategoriList ?? []}
+        hitungPerKategori={fotoData?.hitungPerKategori ?? {}}
+        currentKategori={currentKategori}
+        videos={
+          videoData?.docs.map((v) => ({
+            id: String(v.id),
+            judul: v.judul,
+            pembicara: v.pembicara,
+            tanggal: v.tanggal,
+            youtubeId: v.youtubeId,
+            deskripsi: v.deskripsi ?? null,
+          })) ?? null
+        }
+        videoTotalPages={videoData?.totalPages ?? 1}
+        galeriTotal={counts.galeriTotal}
+        videoTotal={counts.videoTotal}
       />
     </>
   );
