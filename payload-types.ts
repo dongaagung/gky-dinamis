@@ -430,7 +430,7 @@ export interface SiteSettings {
   id: string;
   namaGereja: string;
   motto?: string | null;
-  tagline: string;
+  mottoHero?: string | null;
   alamat: string;
   telepon?: string | null;
   email?: string | null;
@@ -589,7 +589,6 @@ export interface KontakPesanSelect<T extends boolean = true> {
 }
 export interface SiteSettingsSelect<T extends boolean = true> {
   namaGereja?: T;
-  tagline?: T;
   alamat?: T;
   telepon?: T;
   email?: T;

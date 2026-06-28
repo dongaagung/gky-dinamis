@@ -15,13 +15,15 @@ export const SiteSettings: GlobalConfig = {
       name: 'motto',
       type: 'text',
       admin: {
-        description: 'Motto resmi gereja, contoh: Bertumbuh dalam Iman, Melayani dalam Kasih',
+        description: 'Motto yang ditampilkan di footer (bagian bawah setiap halaman), contoh: Bertumbuh dalam Iman, Melayani dalam Kasih',
       },
     },
     {
-      name: 'tagline',
+      name: 'mottoHero',
       type: 'text',
-      required: true,
+      admin: {
+        description: 'Motto yang ditampilkan di hero (banner utama) halaman depan. Terpisah dari motto di footer.',
+      },
     },
     {
       name: 'alamat',

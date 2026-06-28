@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const payload = await getPayload({ config });
   const s = await payload.findGlobal({ slug: "site-settings" });
   const nama = s.namaGereja ?? "GKY Balikpapan";
-  const suffix = s.motto ?? s.tagline ?? "";
+  const suffix = s.motto ?? "";
   return {
     title: nama,
     description: suffix ? `Website resmi ${nama} — ${suffix}` : `Website resmi ${nama}`,

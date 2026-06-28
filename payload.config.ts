@@ -26,6 +26,16 @@ const dirname = path.dirname(filename);
 export default buildConfig({
   admin: {
     user: Users.slug,
+    meta: {
+      titleSuffix: '- Portal GKY',
+      icons: [
+        {
+          rel: 'icon',
+          type: 'image/png',
+          url: '/logo-gky.png',
+        },
+      ],
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
