@@ -11,6 +11,7 @@ import { useScreenSize } from "@/hooks/use-screen-size"
 type Slide = { src: string; alt: string }
 
 const SLIDE_INTERVAL = 5000
+const SWIPE_THRESHOLD = 50
 
 export default function HeroSection({
   namaGereja,
@@ -89,6 +90,27 @@ export default function HeroSection({
     setResetKey((k) => k + 1)
   }, [slides.length])
 
+  const touchStartX = useRef<number | null>(null)
+
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+  }, [])
+
+  const onTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      if (touchStartX.current === null) return
+      const deltaX = e.changedTouches[0].clientX - touchStartX.current
+      touchStartX.current = null
+      if (Math.abs(deltaX) < SWIPE_THRESHOLD) return
+      if (deltaX < 0) {
+        next()
+      } else {
+        prev()
+      }
+    },
+    [next, prev]
+  )
+
   return (
     <>
       {/*
@@ -128,6 +150,8 @@ export default function HeroSection({
         className="relative h-screen min-h-[620px] flex items-end overflow-hidden"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
       >
         {/* Gradient overlays — darken image for text readability in hero only */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/10 z-10" />
