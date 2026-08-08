@@ -10,7 +10,7 @@ export default function FormKontak() {
 
       <div className="w-56 h-56 md:w-64 md:h-64 rounded-xl overflow-hidden border border-gray-200 p-3">
         <Image
-          src="/QR-doa-gky.jpeg"
+          src="/QR-doa-gky.png"
           alt="QR Code Doa GKY"
           width={256}
           height={256}
