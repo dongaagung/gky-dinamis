@@ -174,7 +174,7 @@ export default function HeroSection({
             <button
               onClick={prev}
               aria-label="Slide sebelumnya"
-              className="absolute left-5 md:left-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/10 hover:bg-white/22 border border-white/15 flex items-center justify-center transition-all duration-200 hover:scale-110 backdrop-blur-sm"
+              className="absolute left-5 md:left-8 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-white/10 hover:bg-white/22 border border-white/15 flex items-center justify-center transition-all duration-200 hover:scale-110 backdrop-blur-sm"
             >
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -183,7 +183,7 @@ export default function HeroSection({
             <button
               onClick={next}
               aria-label="Slide berikutnya"
-              className="absolute right-5 md:right-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/10 hover:bg-white/22 border border-white/15 flex items-center justify-center transition-all duration-200 hover:scale-110 backdrop-blur-sm"
+              className="absolute right-5 md:right-8 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-white/10 hover:bg-white/22 border border-white/15 flex items-center justify-center transition-all duration-200 hover:scale-110 backdrop-blur-sm"
             >
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
