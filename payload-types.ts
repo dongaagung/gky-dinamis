@@ -236,7 +236,7 @@ export interface Pengurus {
   id: string;
   nama: string;
   jabatan: string;
-  kategori: 'Pelayan Firman' | 'Majelis Jemaat' | 'Karyawan Gereja';
+  kategori: 'Rohaniwan' | 'Majelis Jemaat' | 'Karyawan Gereja';
   foto?: string | Media | null;
   urlFoto?: string | null;
   urutan?: number | null;

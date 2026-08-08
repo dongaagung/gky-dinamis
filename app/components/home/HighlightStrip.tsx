@@ -65,7 +65,7 @@ export default function HighlightStrip() {
           className="text-center mb-6 md:mb-8"
         >
           <h2 className="text-white font-bold text-xl md:text-2xl mb-2">
-            5 Pilar/Panggilan Tugas GKY
+            Panggilan dan Tugas GKY
           </h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-y-0 md:gap-x-6 md:gap-y-6 rounded-lg overflow-hidden md:rounded-none md:overflow-visible">
@@ -79,12 +79,16 @@ export default function HighlightStrip() {
                 i % 2 === 0 ? "bg-white/5" : ""
               }`}
             >
-              <div className="text-white/50 shrink-0 [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-7 md:[&_svg]:h-7">{pillar.icon}</div>
-              <h3 className="text-white font-bold text-base md:text-lg">{pillar.label}</h3>
+              <div className="text-white/50 shrink-0 [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-7 md:[&_svg]:h-7">
+                {pillar.icon}
+              </div>
+              <h3 className="text-white font-bold text-base md:text-lg">
+                {pillar.label}
+              </h3>
             </motion.div>
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }

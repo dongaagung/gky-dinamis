@@ -30,9 +30,9 @@ export const Pengurus: CollectionConfig = {
       type: "select",
       required: true,
       options: [
-        { label: "Pelayan Firman", value: "Pelayan Firman" },
+        { label: "Rohaniwan", value: "Rohaniwan" },
         { label: "Majelis Jemaat", value: "Majelis Jemaat" },
-        { label: "Karyawan Gereja", value: "Karyawan Gereja" },
+        { label: "Staf Pelayan", value: "Karyawan Gereja" },
       ],
     },
     {

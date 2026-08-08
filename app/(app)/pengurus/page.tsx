@@ -13,18 +13,22 @@ export const metadata: Metadata = {
 
 const KELOMPOK_META = [
   {
-    kategori: "Pelayan Firman",
-    deskripsi: "Pendeta yang melayani dan menggembalakan jemaat",
+    kategori: "Rohaniwan",
+    label: "Rohaniwan",
+    deskripsi: "Rohaniwan yang melayani dan menggembalakan jemaat",
   },
   {
     kategori: "Majelis Jemaat",
+    label: "Majelis Jemaat",
     deskripsi: "Penatua dan diaken yang terpilih memimpin jemaat bersama",
   },
   {
     kategori: "Karyawan Gereja",
-    deskripsi: "Staf yang mendukung pelayanan administrasi dan operasional gereja",
+    label: "Staf Pelayan",
+    deskripsi:
+      "Staf yang mendukung pelayanan administrasi dan operasional gereja",
   },
-] as const
+] as const;
 
 export default async function PengurusPage() {
   const payload = await getPayload({ config });
@@ -53,7 +57,7 @@ export default async function PengurusPage() {
           {KELOMPOK_META.map((kelompok, kelompokIndex) => {
             const anggota = byKategori.get(kelompok.kategori) ?? [];
             if (anggota.length === 0) return null;
-            const isFeatured = kelompok.kategori === "Pelayan Firman";
+            const isFeatured = kelompok.kategori === "Rohaniwan";
 
             return (
               <section key={kelompok.kategori}>
@@ -63,7 +67,7 @@ export default async function PengurusPage() {
                   </div>
                   <div>
                     <h2 className="text-2xl md:text-3xl font-bold text-primary">
-                      {kelompok.kategori}
+                      {kelompok.label}
                     </h2>
                     <p className="text-gray-500 text-sm mt-0.5">
                       {kelompok.deskripsi}

@@ -154,9 +154,9 @@ export async function GET() {
   }
 
   const pengurusData = [
-    // Pelayan Firman
-    { nama: "Pdt. Yohanes Susilo", jabatan: "Pendeta Jemaat", kategori: "Pelayan Firman", urlFoto: "https://placehold.co/300x300/1a3a6b/ffffff?text=YS", urutan: 1 },
-    { nama: "Pdt. Maria Andini", jabatan: "Pendeta Muda", kategori: "Pelayan Firman", urlFoto: "https://placehold.co/300x300/1a3a6b/ffffff?text=MA", urutan: 2 },
+    // Rohaniwan
+    { nama: "Pdt. Yohanes Susilo", jabatan: "Pendeta Jemaat", kategori: "Rohaniwan", urlFoto: "https://placehold.co/300x300/1a3a6b/ffffff?text=YS", urutan: 1 },
+    { nama: "Pdt. Maria Andini", jabatan: "Pendeta Muda", kategori: "Rohaniwan", urlFoto: "https://placehold.co/300x300/1a3a6b/ffffff?text=MA", urutan: 2 },
     // Majelis Jemaat
     { nama: "Budi Santoso", jabatan: "Ketua Majelis", kategori: "Majelis Jemaat", urlFoto: "https://placehold.co/300x300/2c5282/ffffff?text=BS", urutan: 1 },
     { nama: "Sri Wahyuni", jabatan: "Wakil Ketua Majelis", kategori: "Majelis Jemaat", urlFoto: "https://placehold.co/300x300/2c5282/ffffff?text=SW", urutan: 2 },
