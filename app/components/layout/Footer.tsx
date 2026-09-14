@@ -11,12 +11,19 @@ type SiteSettingsProps = {
   googleMapsUrl?: string | null;
 };
 
-const quickLinks = [
+type QuickLink = { href: string; label: string; external?: boolean };
+
+const quickLinks: QuickLink[] = [
   { href: "/tentang", label: "Tentang" },
   { href: "/pengurus", label: "Pengurus" },
   { href: "/kegiatan", label: "Kegiatan" },
   { href: "/komunitas", label: "Komunitas" },
   { href: "/media", label: "Media" },
+  {
+    href: "https://gky.or.id/gema.jsp?title=Gerakan+Membaca+Alkitab",
+    label: "GEMA",
+    external: true,
+  },
   { href: "/faq", label: "FAQ" },
   { href: "/kontak", label: "Kontak" },
 ];
@@ -96,15 +103,27 @@ export default function Footer({
         {/* Bottom row: quick links + copyright */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-5">
           <nav className="flex flex-wrap gap-x-4 gap-y-1.5">
-            {quickLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-white/55 hover:text-white text-xs transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {quickLinks.map((link) =>
+              link.external ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/55 hover:text-white text-xs transition-colors"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-white/55 hover:text-white text-xs transition-colors"
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
           </nav>
           <p className="text-white/30 text-xs flex-shrink-0">
             © {new Date().getFullYear()} {siteSettings.namaGereja}

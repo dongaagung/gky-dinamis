@@ -26,7 +26,7 @@ export default async function FaqPage() {
     <main className="min-h-screen">
       <section className="relative bg-[#002F5F] py-14 overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1438032005730-c779502df39b?w=1600&q=80"
+          src="/faq-hero.jpg"
           alt=""
           fill
           className="object-cover opacity-30"

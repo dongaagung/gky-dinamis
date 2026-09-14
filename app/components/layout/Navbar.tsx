@@ -6,7 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 type SubLink = { href: string; label: string };
-type NavLink = { href: string; label: string; submenu?: SubLink[] };
+type NavLink = { href: string; label: string; submenu?: SubLink[]; external?: boolean };
 
 const navLinks: NavLink[] = [
   { href: "/", label: "BERANDA" },
@@ -33,6 +33,11 @@ const navLinks: NavLink[] = [
     ],
   },
   { href: "/media", label: "MEDIA" },
+  {
+    href: "https://gky.or.id/gema.jsp?title=Gerakan+Membaca+Alkitab",
+    label: "GEMA",
+    external: true,
+  },
   { href: "/faq", label: "FAQ" },
   { href: "/kontak", label: "KONTAK" },
 ];
@@ -107,6 +112,23 @@ export default function Navbar() {
               const isOpen = activeDropdown === link.href;
 
               if (!link.submenu) {
+                if (link.external) {
+                  return (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group relative flex flex-col items-center gap-0.5 pb-0.5"
+                    >
+                      <span className="text-sm font-bold tracking-wider text-gray-500 group-hover:text-primary transition-colors duration-200">
+                        {link.label}
+                      </span>
+                      <span className="h-[2px] rounded-full w-0 group-hover:w-full bg-primary transition-all duration-300 ease-out" />
+                    </a>
+                  );
+                }
+
                 return (
                   <Link
                     key={link.href}
@@ -217,6 +239,21 @@ export default function Navbar() {
                   : pathname.startsWith(link.href);
 
               if (!link.submenu) {
+                if (link.external) {
+                  return (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 px-3 py-3 rounded-md font-bold text-sm tracking-wider transition-all duration-200 text-gray-500 hover:text-primary hover:bg-gray-50 border-l-2 border-transparent hover:border-primary"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {link.label}
+                    </a>
+                  );
+                }
+
                 return (
                   <Link
                     key={link.href}
